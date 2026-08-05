@@ -1,0 +1,8 @@
+{
+  "meta": {
+    "runner": "unseeded",
+    "generatedAt": null,
+    "toleranceNote": "compare-benchmarks.mjs allows 25% hz regression. Seed on CI with label update-benchmark-baseline."
+  },
+  "files": []
+}

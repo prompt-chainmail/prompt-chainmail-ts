@@ -1,41 +1,42 @@
 import { Chainmails } from "../dist/prompt-chainmail.es.js";
-import { readFileSync } from "fs";
+import { loadExampleInput, runExampleCases, exitExample } from "./_lib.mjs";
 
-async function runChainmailExamples() {
-  console.log("chainmails\n");
+const markdown = loadExampleInput("./example_6.md", import.meta.url);
+const body = markdown.replace(/^#[^\n]*\n+/m, "").trim();
+const marker = "## Cleaner variant";
+const formatted = body.split(marker)[0].trim();
+const cleaner = body.includes(marker)
+  ? body.slice(body.indexOf(marker) + marker.length).trim()
+  : null;
 
-  const input = readFileSync("./example_6.md", "utf-8");
-  console.log("Input:");
-  console.log("-".repeat(50));
-  console.log(input);
-  console.log("-".repeat(50));
-  console.log();
+const cases = [
+  {
+    name: "Formatted indirect tool hijack",
+    input: formatted,
+    expect: {
+      blocked: true,
+      flagsInclude: ["tool_use_hijacking"],
+    },
+  },
+];
 
-  const chainmails = [
-    { name: "Basic", instance: Chainmails.basic() },
-    { name: "Advanced", instance: Chainmails.advanced() },
-    { name: "Strict", instance: Chainmails.strict() },
-    { name: "Development", instance: Chainmails.development() },
-  ];
-
-  for (const { name, instance } of chainmails) {
-    console.log(`Testing with ${name} Chainmail:`);
-    console.log("-".repeat(30));
-
-    try {
-      const result = await instance.protect(input);
-
-      console.log("Protection Result:", result);
-
-      if (result.error) {
-        console.log(`Error: ${result.error}`);
-      }
-    } catch (error) {
-      console.log(`Error: ${error.message}`);
-    }
-
-    console.log();
-  }
+if (cleaner) {
+  cases.push({
+    name: "Cleaner indirect tool hijack",
+    input: cleaner,
+    expect: {
+      blocked: true,
+      flagsInclude: ["tool_use_hijacking"],
+    },
+  });
 }
 
-runChainmailExamples().catch(console.error);
+const { passed, errors } = await runExampleCases({
+  title: "example_6: indirect injection (Chainmails.advanced)",
+  description:
+    "Document-poisoning / tool-hijack payloads. Formatted and plain-language variants.",
+  chainmail: Chainmails.advanced(),
+  cases,
+});
+
+exitExample(passed, errors);

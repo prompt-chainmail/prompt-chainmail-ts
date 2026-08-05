@@ -2,10 +2,6 @@ import { describe, it, expect } from "vitest";
 import { PromptChainmail } from "../../index";
 import { sqlInjection } from "./sql-injection";
 import { SecurityFlags } from "../rivets.types";
-import {
-  measurePerformance,
-  expectPerformance,
-} from "../../@shared/performance.utils";
 
 const SQL_INJECTION_TESTS = {
   positive: {
@@ -632,42 +628,6 @@ describe("sqlInjection()", () => {
           true
         );
       });
-    });
-  });
-
-  describe("Performance", () => {
-    const chainmail = new PromptChainmail().forge(sqlInjection());
-
-    it("should process simple text within performance threshold", async () => {
-      const result = await measurePerformance(
-        () => chainmail.protect("This is a simple test message"),
-        50
-      );
-
-      expectPerformance(result, 5);
-      expect(result.opsPerSecond).toBeGreaterThan(200);
-    });
-
-    it("should process SQL injection attempts within performance threshold", async () => {
-      const result = await measurePerformance(
-        () => chainmail.protect("1' UNION SELECT password FROM users--"),
-        50
-      );
-
-      expectPerformance(result, 10);
-      expect(result.opsPerSecond).toBeGreaterThan(100);
-    });
-
-    it("should process complex SQL patterns within performance threshold", async () => {
-      const complexSql =
-        "1' AND EXTRACTVALUE(1,CONCAT(0x7e,(SELECT password FROM users LIMIT 1),0x7e))--";
-      const result = await measurePerformance(
-        () => chainmail.protect(complexSql),
-        25
-      );
-
-      expectPerformance(result, 15);
-      expect(result.opsPerSecond).toBeGreaterThan(65);
     });
   });
 });

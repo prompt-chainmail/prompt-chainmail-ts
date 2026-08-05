@@ -2,10 +2,6 @@ import { describe, it, expect, vi, afterEach } from "vitest";
 import { PromptChainmail } from "../../index";
 import { httpFetch } from "./http-fetch";
 import { SecurityFlags } from "../rivets.types";
-import {
-  measurePerformance,
-  expectPerformance,
-} from "../../@shared/performance.utils";
 
 describe("httpFetch(...)", () => {
   const originalFetch = global.fetch;
@@ -187,71 +183,5 @@ describe("httpFetch(...)", () => {
         headers: { Authorization: "Bearer token123" },
       })
     );
-  });
-
-  describe("Performance", () => {
-    const originalFetch = global.fetch;
-
-    afterEach(() => {
-      global.fetch = originalFetch;
-    });
-
-    it("should process HTTP requests within performance threshold", async () => {
-      global.fetch = vi.fn().mockResolvedValue({
-        ok: true,
-        headers: {
-          get: (name: string) => (name === "content-length" ? "100" : null),
-        },
-        json: () => Promise.resolve({ safe: true, score: 0.9 }),
-      });
-
-      const chainmail = new PromptChainmail().forge(
-        httpFetch("https://api.example.com/validate")
-      );
-
-      const result = await measurePerformance(
-        () => chainmail.protect("test input"),
-        20
-      );
-
-      expectPerformance(result, 50);
-      expect(result.opsPerSecond).toBeGreaterThan(20);
-    });
-
-    it("should handle HTTP errors within performance threshold", async () => {
-      global.fetch = vi.fn().mockResolvedValue({
-        ok: false,
-        status: 500,
-        statusText: "Internal Server Error",
-      });
-
-      const chainmail = new PromptChainmail().forge(
-        httpFetch("https://api.example.com/validate")
-      );
-
-      const result = await measurePerformance(
-        () => chainmail.protect("test input"),
-        20
-      );
-
-      expectPerformance(result, 50);
-      expect(result.opsPerSecond).toBeGreaterThan(20);
-    });
-
-    it("should handle network errors within performance threshold", async () => {
-      global.fetch = vi.fn().mockRejectedValue(new Error("Network error"));
-
-      const chainmail = new PromptChainmail().forge(
-        httpFetch("https://api.example.com/validate")
-      );
-
-      const result = await measurePerformance(
-        () => chainmail.protect("test input"),
-        20
-      );
-
-      expectPerformance(result, 50);
-      expect(result.opsPerSecond).toBeGreaterThan(20);
-    });
   });
 });

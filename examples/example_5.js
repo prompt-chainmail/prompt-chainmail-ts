@@ -1,31 +1,45 @@
 import { PromptChainmail, Rivets } from "../dist/prompt-chainmail.es.js";
-import { readFileSync } from "fs";
+import { loadExampleInput, runExampleCases, exitExample } from "./_lib.mjs";
 
-async function runInstructionHijackingExample() {
-  console.log("instructionHijacking (80% confidence filter)\n");
+const markdown = loadExampleInput("./example_5.md", import.meta.url);
+const body = markdown.replace(/^#[^\n]*\n+/m, "").trim();
+const marker = "## Translation obfuscation";
+const englishBlock = body.split(marker)[0].trim();
+const translationBlock = body.includes(marker)
+  ? body.slice(body.indexOf(marker) + marker.length).trim()
+  : null;
 
-  const input = readFileSync("./example_5.md", "utf-8");
-  console.log("Input:");
-  console.log("-".repeat(50));
-  console.log(input);
-  console.log("-".repeat(50));
-  console.log();
+const cases = [
+  {
+    name: "Direct instruction hijacking",
+    input: englishBlock,
+    expect: {
+      blocked: true,
+      flagsInclude: ["instruction_hijacking"],
+      maxConfidence: 0.8,
+    },
+  },
+];
 
-  const chainmail = new PromptChainmail()
-    .forge(Rivets.instructionHijacking())
-    .forge(Rivets.confidenceFilter(0.8));
-
-  try {
-    const result = await chainmail.protect(input);
-
-    console.log("Protection Result:", result);
-
-    if (result.error) {
-      console.log(`Error: ${result.error}`);
-    }
-  } catch (error) {
-    console.log(`Error: ${error.message}`);
-  }
+if (translationBlock) {
+  cases.push({
+    name: "Spanish translation obfuscation",
+    input: translationBlock,
+    expect: {
+      // Known gap unless multilingual classifier recall improves.
+      blocked: false,
+    },
+  });
 }
 
-runInstructionHijackingExample().catch(console.error);
+const { passed, errors } = await runExampleCases({
+  title: "example_5: instructionHijacking (direct + translated)",
+  description:
+    "Classifier-backed instruction hijacking on English overrides and translated variants.",
+  chainmail: new PromptChainmail()
+    .forge(Rivets.instructionHijacking())
+    .forge(Rivets.confidenceFilter(0.8)),
+  cases,
+});
+
+exitExample(passed, errors);

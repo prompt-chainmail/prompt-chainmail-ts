@@ -3,10 +3,7 @@ import { PromptChainmail, Rivets } from "../index";
 /**
  * Pre-forged chainmail configurations
  */
-export const Chainmails: Record<
-  string,
-  (...args: unknown[]) => PromptChainmail
-> = {
+export const Chainmails = {
   /**
    * Basic protection chainmail
    */
@@ -29,6 +26,7 @@ export const Chainmails: Record<
       .forge(Rivets.roleConfusion())
       .forge(Rivets.delimiterConfusion())
       .forge(Rivets.instructionHijacking())
+      .forge(Rivets.toolUseHijacking())
       .forge(Rivets.codeInjection())
       .forge(Rivets.sqlInjection())
       .forge(Rivets.templateInjection())
@@ -55,6 +53,7 @@ export const Chainmails: Record<
       .forge(Rivets.roleConfusion())
       .forge(Rivets.delimiterConfusion())
       .forge(Rivets.instructionHijacking())
+      .forge(Rivets.toolUseHijacking())
       .forge(Rivets.codeInjection())
       .forge(Rivets.sqlInjection())
       .forge(Rivets.templateInjection())

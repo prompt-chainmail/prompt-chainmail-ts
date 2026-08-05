@@ -1,0 +1,101 @@
+{
+  "artifact_version": "classifier-v1-2026-08-05-seed20260805",
+  "attack_threshold": 0.95,
+  "corpus_revision": "2026-08-05",
+  "gate_failures": [
+    "macro_recall 0.7245 < 0.9",
+    "benign_false_positive_rate 0.0102 > 0.01",
+    "deu recall 0.7358 < 0.8",
+    "ita recall 0.7333 < 0.8",
+    "jpn recall 0.7234 < 0.8",
+    "kor recall 0.7632 < 0.8",
+    "por recall 0.7708 < 0.8",
+    "rus recall 0.6909 < 0.8",
+    "spa recall 0.7609 < 0.8",
+    "zho recall 0.6809 < 0.8"
+  ],
+  "labels": [
+    "instruction_override",
+    "instruction_forgetting",
+    "reset_system",
+    "bypass_security",
+    "information_extraction",
+    "role_assumption",
+    "mode_switching",
+    "permission_assertion",
+    "role_indicator",
+    "tool_use_hijacking"
+  ],
+  "metrics": {
+    "attack_f1": 0.9563909774436091,
+    "attack_precision": 0.99375,
+    "attack_recall": 0.9217391304347826,
+    "benign_false_positive_rate": 0.01015228426395939,
+    "macro_f1": 0.7529446629295997,
+    "macro_recall": 0.7244923937438101,
+    "per_language": {
+      "ara": {
+        "recall": 0.8837209302325582
+      },
+      "deu": {
+        "recall": 0.7358490566037735
+      },
+      "eng": {
+        "recall": 0.8658536585365854
+      },
+      "fra": {
+        "recall": 0.9
+      },
+      "ita": {
+        "recall": 0.7333333333333333
+      },
+      "jpn": {
+        "recall": 0.723404255319149
+      },
+      "kor": {
+        "recall": 0.7631578947368421
+      },
+      "nld": {
+        "recall": 0.851063829787234
+      },
+      "por": {
+        "recall": 0.7708333333333334
+      },
+      "ron": {
+        "recall": 0.8809523809523809
+      },
+      "rus": {
+        "recall": 0.6909090909090909
+      },
+      "spa": {
+        "recall": 0.7608695652173914
+      },
+      "zho": {
+        "recall": 0.6808510638297872
+      }
+    }
+  },
+  "model_sha256": "084268939571e9a363e41974577787bfa78c7d69ff74de2d8ef627625f98027b",
+  "model_size_bytes": 1339024,
+  "normalization_version": "nfkc-whitespace-lower-v1",
+  "quantization": {
+    "format": "FLOAT32",
+    "method": "none-float32-fallback"
+  },
+  "release_quality": false,
+  "schema_version": 1,
+  "thresholds": {
+    "bypass_security": 0.51,
+    "information_extraction": 0.15,
+    "instruction_forgetting": 0.36,
+    "instruction_override": 0.93,
+    "mode_switching": 0.79,
+    "permission_assertion": 0.05,
+    "reset_system": 0.73,
+    "role_assumption": 0.92,
+    "role_indicator": 0.11,
+    "tool_use_hijacking": 0.1
+  },
+  "window_size_bytes": 1024,
+  "window_stride_bytes": 768
+}

@@ -6,6 +6,7 @@ import {
   HTML_ENTITIES,
   ENCODING_PATTERNS,
 } from "../../@shared/regex-patterns/common.const";
+import { createPatternDetectionPatterns } from "../pattern-detection/pattern-detection.utils";
 
 /**
  * @description
@@ -143,7 +144,8 @@ export function encodingDetection(): ChainmailRivet {
       }
     }
 
-    // ROT13 detection - only flag if input appears to be intentionally encoded
+    // ROT13 detection - flag when decoded content matches injection patterns
+    // but the original plaintext does not (classic obfuscation bypass)
     let rot13Decoded = "";
     for (let i = 0; i < context.sanitized.length; i++) {
       const char = context.sanitized[i];
@@ -157,16 +159,20 @@ export function encodingDetection(): ChainmailRivet {
       }
     }
 
-    // Only flag if the original text contains suspicious patterns that suggest intentional encoding
-    const hasNonWords = /[^\p{L}\p{N}\s]/u.test(context.sanitized);
-    const hasConsecutiveConsonants =
-      /[bcdfghjklmnpqrstvwxyzBCDFGHJKLMNPQRSTVWXYZ]{4,}/.test(
-        context.sanitized
-      );
-    const isLikelyEncoded =
-      hasNonWords || hasConsecutiveConsonants || context.sanitized.length > 50;
+    const injectionPatterns = createPatternDetectionPatterns();
+    const rot13SuspiciousPatterns = [
+      ...injectionPatterns,
+      /\bignore\b[\s\S]{0,24}\b(system|instructions?|rules?|prompts?)\b/i,
+      /\b(forget|disregard|override|bypass)\b[\s\S]{0,24}\b(all|previous|safety)\b/i,
+    ];
+    const decodedMatchesInjection = rot13SuspiciousPatterns.some((pattern) =>
+      pattern.test(rot13Decoded)
+    );
+    const originalMatchesInjection = rot13SuspiciousPatterns.some((pattern) =>
+      pattern.test(context.sanitized)
+    );
 
-    if (rot13Decoded !== context.sanitized && isLikelyEncoded) {
+    if (decodedMatchesInjection && !originalMatchesInjection) {
       context.flags.add(SecurityFlags.ROT13_ENCODING);
       applyThreatPenalty(context, ThreatLevel.MEDIUM);
       context.metadata.rot13_decoded_content = rot13Decoded.slice(0, 100);

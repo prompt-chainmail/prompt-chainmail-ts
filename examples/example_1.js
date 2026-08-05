@@ -1,31 +1,21 @@
 import { PromptChainmail, Rivets } from "../dist/prompt-chainmail.es.js";
-import { readFileSync } from "fs";
+import { loadExampleInput, runExample, exitExample } from "./_lib.mjs";
 
-async function runSqlInjectionExample() {
-  console.log("sqlInjection (80% confidence filter)\n");
+const input = loadExampleInput("./example_1.md", import.meta.url);
 
-  const input = readFileSync("./example_1.md", "utf-8");
-  console.log("Input:");
-  console.log("-".repeat(50));
-  console.log(input);
-  console.log("-".repeat(50));
-  console.log();
-
-  const chainmail = new PromptChainmail()
+const { passed, errors } = await runExample({
+  title: "example_1: sqlInjection (security review context)",
+  description:
+    "User pastes dangerous SQL from a ticket while asking for remediation guidance.",
+  chainmail: new PromptChainmail()
     .forge(Rivets.sqlInjection())
-    .forge(Rivets.confidenceFilter(0.8));
+    .forge(Rivets.confidenceFilter(0.8)),
+  input,
+  expect: {
+    blocked: true,
+    flagsInclude: ["sql_injection"],
+    maxConfidence: 0.8,
+  },
+});
 
-  try {
-    const result = await chainmail.protect(input);
-
-    console.log("Protection Result:", result);
-
-    if (result.error) {
-      console.log(`Error: ${result.error}`);
-    }
-  } catch (error) {
-    console.log(`Error: ${error.message}`);
-  }
-}
-
-runSqlInjectionExample().catch(console.error);
+exitExample(passed, errors);

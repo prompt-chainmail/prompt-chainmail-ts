@@ -3,10 +3,6 @@ import { PromptChainmail } from "../../index";
 import { telemetry } from "./telemetry";
 import { TelemetryProvider } from "./telemetry.types";
 import { ThreatLevel } from "../rivets.types";
-import {
-  measurePerformance,
-  expectPerformance,
-} from "../../@shared/performance.utils";
 import { createConsoleProvider } from "./telemetry.utils";
 import type { ChainmailRivet } from "../../index";
 
@@ -183,58 +179,5 @@ describe("telemetry(...)", () => {
     await chainmail.protect("test input");
 
     expect(customLogFn).not.toHaveBeenCalled();
-  });
-
-  describe("Performance", () => {
-    beforeEach(() => {
-      vi.clearAllMocks();
-    });
-
-    it("should process telemetry logging within performance threshold", async () => {
-      const chainmail = new PromptChainmail().forge(telemetry());
-
-      const result = await measurePerformance(
-        () => chainmail.protect("test input"),
-        50
-      );
-
-      expectPerformance(result, 8);
-      expect(result.opsPerSecond).toBeGreaterThan(125);
-    });
-
-    it("should handle custom provider within performance threshold", async () => {
-      const mockProvider: TelemetryProvider = {
-        logSecurityEvent: vi.fn(),
-        trackMetric: vi.fn(),
-        captureError: vi.fn(),
-        addBreadcrumb: vi.fn(),
-      };
-
-      const chainmail = new PromptChainmail().forge(
-        telemetry({ provider: mockProvider })
-      );
-
-      const result = await measurePerformance(
-        () => chainmail.protect("test input"),
-        50
-      );
-
-      expectPerformance(result, 10);
-      expect(result.opsPerSecond).toBeGreaterThan(100);
-    });
-
-    it("should process large text with telemetry within performance threshold", async () => {
-      const chainmail = new PromptChainmail().forge(telemetry());
-      const largeText =
-        "This is a test message for telemetry performance. ".repeat(100);
-
-      const result = await measurePerformance(
-        () => chainmail.protect(largeText),
-        25
-      );
-
-      expectPerformance(result, 15);
-      expect(result.opsPerSecond).toBeGreaterThan(65);
-    });
   });
 });

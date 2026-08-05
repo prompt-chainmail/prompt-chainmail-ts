@@ -1,0 +1,7 @@
+{
+  "compilerOptions": {
+    "lib": ["deno.window"]
+  },
+  "unstable": ["sloppy-imports"],
+  "exclude": ["dist/", "node_modules/", "coverage/", "**/*.test.ts"]
+}

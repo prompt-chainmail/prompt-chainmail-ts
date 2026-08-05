@@ -9,6 +9,7 @@ export * from "./sql-injection/sql-injection";
 export * from "./code-injection/code-injection";
 export * from "./delimiter-confusion/delimiter-confusion";
 export * from "./instruction-hijacking/instruction-hijacking";
+export * from "./tool-use-hijacking/tool-use-hijacking";
 export * from "./template-injection/template-injection";
 export * from "./structure-analysis/structure-analysis";
 export * from "./confidence-filter/confidence-filter";
