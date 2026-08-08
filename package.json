@@ -1,9 +1,9 @@
 {
   "name": "prompt-chainmail",
-  "version": "0.6.12",
+  "version": "0.7.0",
   "description": "Security middleware that shields AI applications from prompt injection, jailbreaking, and obfuscated attacks through composable defense layers.",
   "type": "module",
-  "main": "./dist/prompt-chainmail.cjs.js",
+  "main": "./dist/prompt-chainmail.cjs",
   "module": "./dist/prompt-chainmail.es.js",
   "types": "./dist/index.d.ts",
   "exports": {
@@ -14,7 +14,7 @@
       },
       "require": {
         "types": "./dist/index.d.ts",
-        "default": "./dist/prompt-chainmail.cjs.js"
+        "default": "./dist/prompt-chainmail.cjs"
       }
     }
   },
@@ -25,16 +25,20 @@
     "build": "vite build && npm run build:types",
     "build:types": "tsc --emitDeclarationOnly --outDir dist",
     "dev": "vite build --watch",
-    "test": "vitest -t \"^(?!.*Performance).*$\"",
-    "test:ci": "vitest run -t \"^(?!.*Performance).*$\"",
-    "test:perf": "vitest --grep \"Performance\"",
-    "test:perf:ci": "vitest run --grep \"Performance\"",
-    "test:all": "vitest",
+    "test": "vitest run",
+    "test:ci": "vitest run",
+    "benchmark": "vitest bench --config vitest.bench.config.ts --run",
+    "benchmark:ci": "vitest bench --config vitest.bench.config.ts --run --outputJson bench/.last-run.json && node scripts/compare-benchmarks.mjs bench/baselines/rivets.json bench/.last-run.json",
+    "benchmark:baseline": "vitest bench --config vitest.bench.config.ts --run --outputJson bench/baselines/rivets.json && node scripts/stamp-benchmark-baseline.mjs bench/baselines/rivets.json local",
+    "benchmark:baseline:ci": "vitest bench --config vitest.bench.config.ts --run --outputJson bench/baselines/rivets.json && node scripts/stamp-benchmark-baseline.mjs bench/baselines/rivets.json ubuntu-latest",
     "test:ui": "vitest --ui",
     "coverage": "vitest --coverage",
-    "lint": "eslint src --ext .ts",
-    "format": "prettier --write \"**/*.{ts,js,json,md}\"",
+    "lint": "oxlint src",
+    "format": "oxfmt",
+    "format:check": "oxfmt --check",
     "security": "semgrep --config=.semgrep.yml src/",
+    "fetch:classifier": "node scripts/fetch-classifier-model.mjs",
+    "generate:classifier": "npm run fetch:classifier",
     "prepare": "husky",
     "prepublishOnly": "npm run build && npm run test:ci",
     "publish:npm": "npm publish",
@@ -52,35 +56,33 @@
     "rivets",
     "typescript"
   ],
-  "author": "alexandrughinea <alexandrughinea.dev+prompt-chainmail@gmail.com>",
+  "author": "prompt-chainmail <alexandrughinea.dev+prompt-chainmail@gmail.com>",
   "license": "BSL-1.1",
   "repository": {
     "type": "git",
-    "url": "https://github.com/alexandrughinea/prompt-chainmail-ts.git"
+    "url": "https://github.com/prompt-chainmail/prompt-chainmail-ts.git"
   },
   "bugs": {
-    "url": "https://github.com/alexandrughinea/prompt-chainmail-ts/issues"
+    "url": "https://github.com/prompt-chainmail/prompt-chainmail-ts/issues"
   },
-  "homepage": "https://github.com/alexandrughinea/prompt-chainmail-ts#readme",
+  "homepage": "https://github.com/prompt-chainmail/prompt-chainmail-ts#readme",
   "devDependencies": {
     "@types/node": "^24.3.1",
-    "@typescript-eslint/eslint-plugin": "^8.42.0",
-    "@typescript-eslint/parser": "^8.42.0",
-    "@vitest/coverage-v8": "^3.2.4",
-    "@vitest/ui": "^3.2.4",
-    "eslint": "^9.35.0",
+    "@vitest/coverage-v8": "^4.1.10",
     "husky": "^9.1.7",
-    "prettier": "^3.6.2",
-    "typescript": "^5.9.2",
-    "vite": "^7.1.5",
+    "oxfmt": "^0.62.0",
+    "oxlint": "^1.77.0",
+    "typescript": "^7.0.2",
+    "vite": "8.0.16",
     "vite-plugin-dts": "^4.5.4",
-    "vitest": "^3.2.4"
+    "vitest": "^4.1.10"
   },
   "engines": {
     "node": ">=16.0.0"
   },
   "dependencies": {
-    "franc": "^6.2.0"
+    "franc": "^6.2.0",
+    "onnxruntime-web": "^1.27.0"
   },
   "publishConfig": {
     "provenance": true

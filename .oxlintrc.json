@@ -1,0 +1,17 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["typescript"],
+  "env": {
+    "builtin": true,
+    "node": true,
+    "es2024": true
+  },
+  "ignorePatterns": ["dist/", "node_modules/", "coverage/", "*.cjs"],
+  "rules": {
+    "typescript/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+    "typescript/no-explicit-any": "warn",
+    "prefer-const": "error",
+    "no-var": "error",
+    "no-unused-vars": "off"
+  }
+}

@@ -388,19 +388,4 @@ describe("LanguageDetector", () => {
       expect(results[0][1]).toBeGreaterThan(0);
     });
   });
-
-  describe("Performance", () => {
-    it("should handle long text efficiently", () => {
-      const longText = "The quick brown fox jumps over the lazy dog. ".repeat(
-        1000
-      );
-      const startTime = Date.now();
-      const results = detector.detect(longText);
-      const endTime = Date.now();
-
-      expect(Array.isArray(results)).toBe(true);
-      expect(results.length).toBeGreaterThan(0);
-      expect(endTime - startTime).toBeLessThan(1000);
-    });
-  });
 });

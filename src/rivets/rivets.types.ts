@@ -44,6 +44,10 @@ export enum SecurityFlags {
   // General rate control
   RATE_LIMITED = "rate_limited",
 
+  // Classifier-backed detector availability (family-neutral: applies to
+  // both role_confusion and instruction_hijacking)
+  CLASSIFIER_UNAVAILABLE = "classifier_unavailable",
+
   // General HTTP operations
   HTTP_VALIDATION_FAILED = "http_validation_failed",
   HTTP_SUCCESS = "http_success",
@@ -55,6 +59,7 @@ export enum SecurityFlags {
   CODE_INJECTION = "code_injection",
   TEMPLATE_INJECTION = "template_injection",
   DELIMITER_CONFUSION = "delimiter_confusion",
+  TOOL_USE_HIJACKING = "tool_use_hijacking",
 
   // Specific role confusion attacks
   ROLE_CONFUSION = "role_confusion",

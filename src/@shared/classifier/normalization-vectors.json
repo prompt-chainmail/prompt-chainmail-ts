@@ -1,0 +1,113 @@
+{
+  "normalization_version": "nfkc-whitespace-lower-v1",
+  "normalization_vectors": [
+    {
+      "name": "nfkc compatibility forms",
+      "input": "Ｆｏｏ ① K",
+      "normalized": "foo 1 k",
+      "utf8_hex": "666f6f2031206b"
+    },
+    {
+      "name": "unicode whitespace",
+      "input": " \tHELLO \n WORLD  ",
+      "normalized": "hello world",
+      "utf8_hex": "68656c6c6f20776f726c64"
+    },
+    {
+      "name": "locale independent lowercasing",
+      "input": "İSTANBUL ΣΟΣ ẞ",
+      "normalized": "i̇stanbul σος ß",
+      "utf8_hex": "69cc877374616e62756c20cf83cebfcf8220c39f"
+    },
+    {
+      "name": "mixed scripts",
+      "input": "РAΥLOAD ЖS",
+      "normalized": "рaυload жs",
+      "utf8_hex": "d18061cf856c6f616420d0b673"
+    },
+    {
+      "name": "emoji",
+      "input": "  ALERT 🛡️🚨  ",
+      "normalized": "alert 🛡️🚨",
+      "utf8_hex": "616c65727420f09f9ba1efb88ff09f9aa8"
+    },
+    {
+      "name": "combining characters",
+      "input": "CAFÉ",
+      "normalized": "café",
+      "utf8_hex": "636166c3a9"
+    },
+    {
+      "name": "empty input",
+      "input": "",
+      "normalized": "",
+      "utf8_hex": ""
+    }
+  ],
+  "window_vectors": [
+    {
+      "name": "empty input",
+      "input": "",
+      "size": 1024,
+      "stride": 768,
+      "windows": []
+    },
+    {
+      "name": "utf8 boundary safety",
+      "input": "AB😀CDéFG",
+      "size": 6,
+      "stride": 4,
+      "windows": [
+        { "utf8_hex": "6162f09f9880" },
+        { "utf8_hex": "f09f98806364" },
+        { "utf8_hex": "c3a96667" }
+      ]
+    },
+    {
+      "name": "single window below default size",
+      "input_repeat": {
+        "value": "A",
+        "count": 900
+      },
+      "size": 1024,
+      "stride": 768,
+      "windows": [
+        {
+          "repeat": {
+            "utf8_hex": "61",
+            "count": 900
+          }
+        }
+      ]
+    },
+    {
+      "name": "more than two default windows",
+      "input_repeat": {
+        "value": "A",
+        "count": 1800
+      },
+      "size": 1024,
+      "stride": 768,
+      "windows": [
+        {
+          "repeat": {
+            "utf8_hex": "61",
+            "count": 1024
+          }
+        },
+        {
+          "repeat": {
+            "utf8_hex": "61",
+            "count": 1024
+          }
+        },
+        {
+          "repeat": {
+            "utf8_hex": "61",
+            "count": 264
+          }
+        }
+      ]
+    }
+  ]
+}

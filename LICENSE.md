@@ -7,9 +7,9 @@ License text copyright (c) 2017 MariaDB Corporation Ab, All Rights Reserved.
 
 Parameters
 
-Licensor: alexandrughinea
+Licensor: prompt-chainmail
 Licensed Work: Prompt Chainmail
-The Licensed Work is (c) 2025 alexandrughinea
+The Licensed Work is (c) 2025 prompt-chainmail
 Additional Use Grant: You may make production use of the Licensed Work,
 provided such use does not include offering the
 Licensed Work to third parties on a hosted or
@@ -19,7 +19,7 @@ Change Date: January 1, 2029
 Change License: Apache License, Version 2.0
 
 For information about alternative licensing arrangements for the Licensed Work,
-please visit: https://github.com/alexandrughinea/prompt-chainmail
+please visit: https://github.com/prompt-chainmail/prompt-chainmail-ts
 
 ---
 

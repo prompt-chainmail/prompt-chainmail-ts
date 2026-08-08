@@ -10,6 +10,7 @@ import {
   codeInjection,
   delimiterConfusion,
   instructionHijacking,
+  toolUseHijacking,
   templateInjection,
   structureAnalysis,
   confidenceFilter,
@@ -36,6 +37,7 @@ export {
   codeInjection,
   delimiterConfusion,
   instructionHijacking,
+  toolUseHijacking,
   templateInjection,
   structureAnalysis,
   confidenceFilter,
@@ -349,7 +351,7 @@ export class PromptChainmail {
           throw new Error(`Property '${String(prop)}' is readonly`);
         }
 
-        (target as any)[prop] = value;
+        Reflect.set(target, prop, value);
 
         return true;
       },
@@ -375,7 +377,7 @@ export class PromptChainmail {
         if (prop === "success") {
           return !(target as ChainmailResult).context.blocked;
         }
-        return (target as any)[prop];
+        return Reflect.get(target, prop);
       },
       set(target, prop, value) {
         if (prop === "success") {
@@ -385,7 +387,7 @@ export class PromptChainmail {
           throw new Error("Cannot modify context: immutable after creation");
         }
 
-        (target as any)[prop] = value;
+        Reflect.set(target, prop, value);
 
         return true;
       },

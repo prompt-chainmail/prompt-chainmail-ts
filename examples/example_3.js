@@ -1,31 +1,21 @@
 import { PromptChainmail, Rivets } from "../dist/prompt-chainmail.es.js";
-import { readFileSync } from "fs";
+import { loadExampleInput, runExample, exitExample } from "./_lib.mjs";
 
-async function runCodeInjectionExample() {
-  console.log("codeInjection  (80% confidence filter)\n");
+const input = loadExampleInput("./example_3.md", import.meta.url);
 
-  const input = readFileSync("./example_3.md", "utf-8");
-  console.log("Input:");
-  console.log("-".repeat(50));
-  console.log(input);
-  console.log("-".repeat(50));
-  console.log();
-
-  const chainmail = new PromptChainmail()
+const { passed, errors } = await runExample({
+  title: "example_3: codeInjection (pentest review context)",
+  description:
+    "Security review text that quotes dangerous execution patterns from a report.",
+  chainmail: new PromptChainmail()
     .forge(Rivets.codeInjection())
-    .forge(Rivets.confidenceFilter(0.8));
+    .forge(Rivets.confidenceFilter(0.8)),
+  input,
+  expect: {
+    blocked: true,
+    flagsInclude: ["code_injection"],
+    maxConfidence: 0.8,
+  },
+});
 
-  try {
-    const result = await chainmail.protect(input);
-
-    console.log("Protection Result:", result);
-
-    if (result.error) {
-      console.log(`Error: ${result.error}`);
-    }
-  } catch (error) {
-    console.log(`Error: ${error.message}`);
-  }
-}
-
-runCodeInjectionExample().catch(console.error);
+exitExample(passed, errors);

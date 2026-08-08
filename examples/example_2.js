@@ -1,31 +1,53 @@
 import { PromptChainmail, Rivets } from "../dist/prompt-chainmail.es.js";
-import { readFileSync } from "fs";
+import { loadExampleInput, runExampleCases, exitExample } from "./_lib.mjs";
 
-async function runRoleConfusionExample() {
-  console.log("roleConfusion  (80% confidence filter)\n");
+const sections = splitSections(
+  loadExampleInput("./example_2.md", import.meta.url)
+);
 
-  const input = readFileSync("./example_2.md", "utf-8");
-  console.log("Input:");
-  console.log("-".repeat(50));
-  console.log(input);
-  console.log("-".repeat(50));
-  console.log();
+function splitSections(markdown) {
+  const body = markdown.replace(/^#[^\n]*\n+/m, "").trim();
+  const marker = "## Subtle variant";
+  const obvious = body.split(marker)[0].trim();
+  const subtle = body.includes(marker)
+    ? body.slice(body.indexOf(marker) + marker.length).trim()
+    : null;
 
-  const chainmail = new PromptChainmail()
-    .forge(Rivets.roleConfusion())
-    .forge(Rivets.confidenceFilter(0.8));
+  const cases = [
+    {
+      name: "Obvious role confusion",
+      input: obvious,
+      expect: {
+        blocked: true,
+        flagsInclude: ["role_confusion"],
+        maxConfidence: 0.8,
+      },
+    },
+  ];
 
-  try {
-    const result = await chainmail.protect(input);
-
-    console.log("Protection Result:", result);
-
-    if (result.error) {
-      console.log(`Error: ${result.error}`);
-    }
-  } catch (error) {
-    console.log(`Error: ${error.message}`);
+  if (subtle) {
+    cases.push({
+      name: "Subtle jailbreak framing",
+      input: subtle,
+      expect: {
+        // Documents a known gap: subtle role-play jailbreaks are harder to catch.
+        blocked: false,
+        flagsExclude: ["role_confusion", "instruction_hijacking"],
+      },
+    });
   }
+
+  return cases;
 }
 
-runRoleConfusionExample().catch(console.error);
+const { passed, errors } = await runExampleCases({
+  title: "example_2: roleConfusion (obvious + subtle)",
+  description:
+    "Classifier-backed role confusion rivet on blunt and subtle jailbreak phrasing.",
+  chainmail: new PromptChainmail()
+    .forge(Rivets.roleConfusion())
+    .forge(Rivets.confidenceFilter(0.8)),
+  cases: sections,
+});
+
+exitExample(passed, errors);

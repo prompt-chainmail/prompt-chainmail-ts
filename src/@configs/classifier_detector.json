@@ -1,0 +1,36 @@
+{
+  "@class": "classifier_detector",
+  "version": "1.0",
+  "value": {
+    "instruction_hijacking": {
+      "risk_calculation": {
+        "cybercrime_index_base": 10,
+        "max_attack_type_multiplier": 2,
+        "attack_type_divisor": 2,
+        "high_risk_boost": 1.5,
+        "max_risk_score": 100,
+        "fallback_threshold": 15
+      }
+    },
+    "role_confusion": {
+      "risk_calculation": {
+        "cybercrime_index_base": 10,
+        "max_attack_type_multiplier": 2,
+        "attack_type_divisor": 2,
+        "high_risk_boost": 1.5,
+        "max_risk_score": 100,
+        "fallback_threshold": 15
+      }
+    },
+    "tool_use_hijacking": {
+      "risk_calculation": {
+        "cybercrime_index_base": 10,
+        "max_attack_type_multiplier": 2,
+        "attack_type_divisor": 2,
+        "high_risk_boost": 1.5,
+        "max_risk_score": 100,
+        "fallback_threshold": 15
+      }
+    }
+  }
+}

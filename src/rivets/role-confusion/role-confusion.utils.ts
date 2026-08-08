@@ -1,51 +1,34 @@
-import { PatternDetector } from "../../@shared/pattern-detector/pattern-detector";
-import { PatternDetectionResult } from "../../@shared/pattern-detector/pattern-detector.types";
-import { PatternLoader } from "../../@shared/pattern-detector/pattern-loader";
+import {
+  CombinedClassifier,
+  SemanticDetectionResult,
+  getCombinedClassifier,
+} from "../../@shared/classifier";
 
-export interface ConfusionPatternDetectionResult
-  extends PatternDetectionResult {}
+export interface ConfusionPatternDetectionResult extends SemanticDetectionResult {}
 
-export class RoleConfusionDetector extends PatternDetector {
-  constructor() {
-    super(PatternLoader.get("role_confusion"));
-  }
+export class RoleConfusionDetector {
+  private readonly classifier: CombinedClassifier;
+  private readonly confidenceThreshold?: number;
 
-  public getConfig() {
-    return PatternLoader.get("role_confusion");
+  constructor(
+    configOverrides: { confidenceThreshold?: number } = {},
+    classifier: CombinedClassifier = getCombinedClassifier()
+  ) {
+    this.classifier = classifier;
+    this.confidenceThreshold = configOverrides.confidenceThreshold;
   }
 
   public async detect(
     text: string,
     languageCode: string
   ): Promise<ConfusionPatternDetectionResult> {
-    if (!text?.trim()) {
-      return this.createEmptyResult(languageCode);
-    }
-
-    const normalizedText = this.normalizeText(text);
-    const patternGroup = this.getPatternByLanguageCode(languageCode);
-    const attackPatterns = await this.checkPatterns(
-      normalizedText,
-      patternGroup || languageCode,
-      "role_confusion"
+    return this.classifier.classifyFamily(
+      text,
+      languageCode,
+      "role_confusion",
+      {
+        confidenceThreshold: this.confidenceThreshold,
+      }
     );
-    const isAttack =
-      attackPatterns.attack_types.length > 0 &&
-      attackPatterns.confidence > this.detectionConfig.confidence_threshold;
-
-    const riskScore = this.calculateLanguageCodeRiskScore(
-      attackPatterns.confidence,
-      patternGroup,
-      attackPatterns.attack_types.length
-    );
-
-    return {
-      is_attack: isAttack,
-      attack_types: attackPatterns.attack_types,
-      confidence: attackPatterns.confidence,
-      risk_score: riskScore,
-      detected_language: patternGroup || languageCode,
-      details: attackPatterns.details,
-    };
   }
 }
