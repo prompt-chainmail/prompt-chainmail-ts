@@ -19,8 +19,12 @@
     }
   },
   "files": [
-    "dist"
+    "dist",
+    "DISCLOSURE"
   ],
+  "contentPolicy": {
+    "class": "dual-use"
+  },
   "scripts": {
     "build": "vite build && npm run build:types",
     "build:types": "tsc --emitDeclarationOnly --outDir dist",
@@ -41,7 +45,8 @@
     "generate:classifier": "npm run fetch:classifier",
     "prepare": "husky",
     "prepublishOnly": "npm run build && npm run test:ci",
-    "publish:npm": "npm publish",
+    "publish:npm": "npm stage publish --access public --provenance=false",
+    "publish:npm:list": "npm stage list prompt-chainmail",
     "publish:jsr": "npx jsr publish",
     "publish:all": "npm run publish:npm && npm run publish:jsr"
   },
@@ -60,7 +65,7 @@
   "license": "BUSL-1.1",
   "repository": {
     "type": "git",
-    "url": "https://github.com/prompt-chainmail/prompt-chainmail-ts.git"
+    "url": "git+https://github.com/prompt-chainmail/prompt-chainmail-ts.git"
   },
   "bugs": {
     "url": "https://github.com/prompt-chainmail/prompt-chainmail-ts/issues"

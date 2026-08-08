@@ -1,0 +1,8 @@
+prompt-chainmail is defensive AI security middleware.
+
+It detects prompt injection, jailbreak-style instruction override, role confusion,
+tool-use hijacking, and obfuscated adversarial prompts so applications can block
+or flag untrusted input before it reaches an LLM or agent tool layer.
+
+Intended use: protect AI apps and gateways; security research and audit logging.
+Not malware: it does not exfiltrate data, persist on hosts, or attack systems.
