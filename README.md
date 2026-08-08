@@ -1,5 +1,11 @@
 # Prompt Chainmail
 
+> **npm users:** this package is published on [JSR](https://jsr.io/@prompt-chainmail/prompt-chainmail), not npm. The `prompt-chainmail` package on the npm registry is outdated and npm refuses (403) on publish — please install from JSR instead until remedied:
+>
+> ```bash
+> npx jsr add @prompt-chainmail/prompt-chainmail
+> ```
+
 <div align="center">
   <img src="src/logo.png" alt="Prompt Chainmail Logo" width="200" height="234">
 </div>
@@ -11,7 +17,6 @@
 Security middleware that shields AI applications from prompt injection, jailbreaking, role confusion, tool hijacking attempts and obfuscated attacks through composable defense layers.
 
 [![CI/CD Pipeline](https://github.com/prompt-chainmail/prompt-chainmail-ts/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/prompt-chainmail/prompt-chainmail-ts/actions/workflows/ci.yml)
-[![npm](https://badge.fury.io/js/prompt-chainmail.svg)](https://badge.fury.io/js/prompt-chainmail)
 [![JSR](https://jsr.io/badges/@prompt-chainmail/prompt-chainmail)](https://jsr.io/@prompt-chainmail/prompt-chainmail)
 [![Deno](https://img.shields.io/badge/Deno-compatible-000000?logo=deno&logoColor=white)](https://jsr.io/@prompt-chainmail/prompt-chainmail)
 [![TypeScript](https://img.shields.io/badge/%3C%2F%3E-TypeScript-%230074c1.svg)](http://www.typescriptlang.org/)
@@ -33,7 +38,7 @@ Security middleware that shields AI applications from prompt injection, jailbrea
 ## Quick Start
 
 ```bash
-npm install prompt-chainmail
+npx jsr add @prompt-chainmail/prompt-chainmail
 ```
 
 For local development, `make` / `make help` lists targets. Tests: `make test` (local Vitest), `make test-ci` (full Vitest suite). To refresh the vendored ONNX model from the public [`prompt-chainmail-models`](https://github.com/prompt-chainmail/prompt-chainmail-models) history, bump `classifier-model-version.json` and run `make fetch-classifier`.
