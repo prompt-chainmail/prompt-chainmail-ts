@@ -16,7 +16,7 @@ Security middleware that shields AI applications from prompt injection, jailbrea
 [![Deno](https://img.shields.io/badge/Deno-compatible-000000?logo=deno&logoColor=white)](https://jsr.io/@prompt-chainmail/prompt-chainmail)
 [![TypeScript](https://img.shields.io/badge/%3C%2F%3E-TypeScript-%230074c1.svg)](http://www.typescriptlang.org/)
 [![Security Audit](https://img.shields.io/badge/security-audited-green.svg)](https://github.com/prompt-chainmail/prompt-chainmail-ts/actions/workflows/security.yml)
-[![License: BSL-1.1](https://img.shields.io/badge/license-BSL--1.1-blue.svg)](https://github.com/prompt-chainmail/prompt-chainmail-ts/blob/main/LICENSE.md)
+[![License: BUSL-1.1](https://img.shields.io/badge/license-BUSL--1.1-blue.svg)](https://github.com/prompt-chainmail/prompt-chainmail-ts/blob/main/LICENSE.md)
 [![Beta](https://img.shields.io/badge/status-beta-orange.svg)](https://github.com/prompt-chainmail/prompt-chainmail-ts)
 
 ## Features

@@ -1,9 +1,0 @@
-{
-  "name": "@prompt-chainmail/prompt-chainmail",
-  "version": "0.7.0",
-  "description": "Security middleware that shields AI applications from prompt injection, jailbreaking, role confusion, tool hijacking attempts and obfuscated attacks through composable defense layers.",
-  "license": "BSL-1.1",
-  "exports": {
-    ".": "./src/index.ts"
-  }
-}

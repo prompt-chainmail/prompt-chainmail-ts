@@ -57,7 +57,7 @@
     "typescript"
   ],
   "author": "prompt-chainmail <alexandrughinea.dev+prompt-chainmail@gmail.com>",
-  "license": "BSL-1.1",
+  "license": "BUSL-1.1",
   "repository": {
     "type": "git",
     "url": "https://github.com/prompt-chainmail/prompt-chainmail-ts.git"

@@ -1,9 +1,10 @@
 import { PromptChainmail, Rivets } from "../index";
+import type { ChainmailPresets } from "./chainmails.types";
 
 /**
  * Pre-forged chainmail configurations
  */
-export const Chainmails = {
+export const Chainmails: ChainmailPresets = {
   /**
    * Basic protection chainmail
    */
