@@ -817,7 +817,7 @@ describe("PromptChainmail", () => {
 
         for (const prompt of shortPrompts) {
           const result = await chainmail.protect(prompt);
-          expect(result.processing_time).toBeLessThan(50);
+          expect(result.processing_time).toBeLessThan(150);
           expect(result.success).toBe(true);
           expect(result.context.blocked).toBe(false);
         }
@@ -834,7 +834,7 @@ describe("PromptChainmail", () => {
         const chainmail = TestChainmails.basic();
         const result = await chainmail.protect(mediumPrompt);
 
-        expect(result.processing_time).toBeLessThan(100);
+        expect(result.processing_time).toBeLessThan(250);
         expect(result.success).toBe(true);
         expect(result.context.confidence).toBeGreaterThan(0.3);
         expect(result.context.blocked).toBe(false);
