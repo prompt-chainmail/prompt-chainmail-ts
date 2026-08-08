@@ -21,7 +21,7 @@ const report = JSON.parse(fs.readFileSync(inputPath, "utf8"));
 report.meta = {
   runner,
   generatedAt: new Date().toISOString(),
-  toleranceNote: "compare-benchmarks.mjs allows 25% hz regression",
+  toleranceNote: "compare-benchmarks.mjs allows 40% hz regression",
 };
 
 for (const file of report.files ?? []) {

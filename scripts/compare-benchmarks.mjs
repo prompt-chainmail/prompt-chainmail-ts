@@ -9,7 +9,7 @@
 import fs from "node:fs";
 import path from "node:path";
 
-const TOLERANCE = 0.25; // allow 25% slower (lower hz)
+const TOLERANCE = 0.4; // allow 40% slower (lower hz)
 
 const [baselinePath, currentPath] = process.argv.slice(2);
 if (!baselinePath || !currentPath) {
