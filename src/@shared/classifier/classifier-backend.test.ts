@@ -151,13 +151,7 @@ describe("ClassifierBackend", () => {
       subtypes: CLASSIFIER_LABELS.map((l) => (l === label ? 0.99 : 0)),
     }));
     const backend = new ClassifierBackend({ sessionFactory: factory });
-
     const result = await backend.classify(longText);
-
-    // Independently derived expected ranges: `longText` is pure ASCII, so
-    // no UTF-8 continuation-byte backtracking ever applies and each
-    // window's real start is exactly `index * stride` (clamped at the end),
-    // unlike the buggy naive sum of window lengths this regresses against.
     const normalizedLength = new TextEncoder().encode(
       normalizeClassifierText(longText)
     ).length;
@@ -286,9 +280,6 @@ describe("ClassifierBackend", () => {
       await backend.classify(secretMarker);
       throw new Error("expected classify to reject");
     } catch (error) {
-      // A total classification failure (every window malformed) must be
-      // observable as a rejection with the exact safe ClassifierError code,
-      // not silently swallowed into a clean-looking zero-probability result.
       expect(error).toBeInstanceOf(ClassifierError);
       expect((error as ClassifierError).code).toBe("missing_output");
       const message = error instanceof Error ? error.message : String(error);

@@ -69,32 +69,16 @@ export class CombinedClassifier {
     const attackTypes = Array.from(
       new Set(matches.map((match) => match.label))
     );
-
-    // `confidence` reports the shared attack-head probability (not a
-    // family-specific subtype max) so instruction_hijacking_confidence and
-    // role_confusion_confidence describe the same underlying signal
-    // consistently. Gating still requires a family-relevant subtype above
-    // its own threshold, so a high attack probability from one family's
-    // pattern cannot flip the other family's flags (cross-family isolation).
     const confidence = classification.attack_probability;
     const passesAttackThreshold =
       confidence >= CLASSIFIER_MANIFEST.attack_threshold;
     const passesConfidenceFloor =
       options.confidenceThreshold === undefined ||
       confidence >= options.confidenceThreshold;
-    // Indirect tool-use hijacks often score high on the subtype head while the
-    // shared attack head stays below the global gate. Confirm on subtype alone
-    // for that family; instruction/role families keep dual-head gating.
     const passesAttackGate =
       passesAttackThreshold || family === "tool_use_hijacking";
     const isAttack =
       passesAttackGate && attackTypes.length > 0 && passesConfidenceFloor;
-
-    // Risk is only meaningful for a confirmed attack: a high shared
-    // attack_probability with no relevant family subtype (or a subtype match
-    // below the shared attack gate) must not leak a non-zero risk_score, or
-    // cross-family isolation would be defeated by the risk field even though
-    // `attack_types`/`is_attack` stay correctly empty/false.
     const riskScore = isAttack
       ? calculateLanguageCodeRiskScore(
           confidence,

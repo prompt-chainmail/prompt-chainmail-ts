@@ -143,18 +143,11 @@ describe("getClassifierSession", () => {
     expect(createSessionCalls).toBe(1);
     expect(firstError.code).toBe("session_create_failed");
     expect(secondError.code).toBe("session_create_failed");
-
-    // A third call after the first two have settled, without an explicit
-    // test-only reset, must observe the same cached rejection rather than
-    // re-running checksum verification and session creation.
     const third = await getClassifierSession(failingFactory).catch(
       (error) => error
     );
     expect(createSessionCalls).toBe(1);
     expect(third.code).toBe("session_create_failed");
-
-    // The reset hook is the only sanctioned way to force a retry (e.g. after
-    // a deliberate process restart in a long-lived server, or in tests).
     resetClassifierSessionForTests();
     const workingFactory = fakeFactory();
     await expect(getClassifierSession(workingFactory)).resolves.toBeDefined();
