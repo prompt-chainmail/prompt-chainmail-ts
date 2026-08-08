@@ -16,6 +16,8 @@
 
 Security middleware that shields AI applications from prompt injection, jailbreaking, role confusion, tool hijacking attempts and obfuscated attacks through composable defense layers.
 
+Also available in Rust: [`prompt-chainmail-rs`](https://github.com/prompt-chainmail/prompt-chainmail-rs).
+
 [![CI/CD Pipeline](https://github.com/prompt-chainmail/prompt-chainmail-ts/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/prompt-chainmail/prompt-chainmail-ts/actions/workflows/ci.yml)
 [![JSR](https://jsr.io/badges/@prompt-chainmail/prompt-chainmail)](https://jsr.io/@prompt-chainmail/prompt-chainmail)
 [![Deno](https://img.shields.io/badge/Deno-compatible-000000?logo=deno&logoColor=white)](https://jsr.io/@prompt-chainmail/prompt-chainmail)
