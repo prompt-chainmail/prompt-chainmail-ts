@@ -71,7 +71,7 @@ export const creditCardDetection = (): ChainmailRivet => {
     if (ccPattern.test(context.sanitized)) {
       context.flags.add("credit_card_detected");
       applyThreatPenalty(context, ThreatLevel.CRITICAL);
-      context.metadata.sensitiveDataType = "credit_card";
+      context.metadata.sensitive_data_type = "credit_card";
     }
 
     return next();
@@ -91,7 +91,7 @@ export const profanityFilter = (customWords: string[] = []): ChainmailRivet => {
       if (lower.includes(word)) {
         context.flags.add("profanity_detected");
         applyThreatPenalty(context, ThreatLevel.MEDIUM);
-        context.metadata.detectedWord = word;
+        context.metadata.detected_word = word;
         break;
       }
     }
@@ -117,7 +117,7 @@ export const businessHours = (startHour = 9, endHour = 17): ChainmailRivet => {
     if (hour < startHour || hour > endHour) {
       context.flags.add("outside_business_hours");
       applyThreatPenalty(context, ThreatLevel.LOW);
-      context.metadata.currentHour = hour;
+      context.metadata.current_hour = hour;
     }
 
     return next();
@@ -147,7 +147,7 @@ export const domainWhitelist = (allowedDomains: string[]): ChainmailRivet => {
           if (!allowedDomains.some((allowed) => domain.includes(allowed))) {
             context.flags.add("unauthorized_domain");
             applyThreatPenalty(context, ThreatLevel.HIGH);
-            context.metadata.blockedDomain = domain;
+            context.metadata.blocked_domain = domain;
             break;
           }
         } catch {
@@ -185,7 +185,7 @@ export const personalInfoDetection = (): ChainmailRivet => {
       if (pattern.test(context.sanitized)) {
         context.flags.add(`${type}_detected`);
         applyThreatPenalty(context, ThreatLevel.CRITICAL);
-        context.metadata.personalInfoType = type;
+        context.metadata.personal_info_type = type;
         break;
       }
     }
@@ -254,15 +254,15 @@ export const contentLengthLimit = (
     if (length > maxLength) {
       context.flags.add("content_too_long");
       applyThreatPenalty(context, ThreatLevel.LOW);
-      context.metadata.contentLength = length;
-      context.metadata.maxAllowed = maxLength;
+      context.metadata.content_length = length;
+      context.metadata.max_allowed = maxLength;
     }
 
     if (length < minLength) {
       context.flags.add("content_too_short");
       applyThreatPenalty(context, ThreatLevel.LOW);
-      context.metadata.contentLength = length;
-      context.metadata.minRequired = minLength;
+      context.metadata.content_length = length;
+      context.metadata.min_required = minLength;
     }
 
     return next();
@@ -297,8 +297,8 @@ export const externalSecurityValidation = (
       return data.safe === true && data.score > 0.7;
     },
     onSuccess: (context: ChainmailContext, data) => {
-      context.metadata.securityScore = data.score;
-      context.metadata.detectedThreats = data.threats || [];
+      context.metadata.security_score = data.score;
+      context.metadata.detected_threats = data.threats || [];
       if (data.score < 0.9) {
         const threatLevel =
           data.score < 0.3
@@ -313,7 +313,7 @@ export const externalSecurityValidation = (
     },
     onError: (context: ChainmailContext) => {
       // Fallback to local validation if external API fails
-      context.metadata.externalValidationFailed = true;
+      context.metadata.external_validation_failed = true;
       context.flags.add("external_validation_unavailable");
     },
   });

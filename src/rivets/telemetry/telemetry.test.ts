@@ -71,7 +71,7 @@ describe("telemetry(...)", () => {
     expect(mockProvider.addBreadcrumb).toHaveBeenCalledWith(
       "Processing started",
       expect.objectContaining({
-        sessionId: expect.any(String),
+        session_id: expect.any(String),
         input_length: 10,
       })
     );

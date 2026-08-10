@@ -35,7 +35,7 @@ export function telemetry(options: TelemetryOptions = {}): ChainmailRivet {
     const startTime = Date.now();
 
     telemetryProvider?.addBreadcrumb("Processing started", {
-      sessionId: context.session_id,
+      session_id: context.session_id,
       input_length: context.input.length,
     });
 
