@@ -3,7 +3,7 @@
  * Fetches a pinned model_version from prompt-chainmail-models and adapts it
  * for the TypeScript runtime:
  *   - src/@shared/classifier/manifest.json
- *   - src/@shared/classifier/normalization-vectors.json
+ *   - src/@shared/classifier/normalization_vectors.json
  *   - src/@shared/classifier/classifier-model-data.generated.ts (base64 embed)
  *
  * Source resolution order:
@@ -140,7 +140,7 @@ vendors the model into src/@shared/classifier/.`);
   }
 
   const vendoredManifest = resolve(classifierDir, "manifest.json");
-  const vendoredVectors = resolve(classifierDir, "normalization-vectors.json");
+  const vendoredVectors = resolve(classifierDir, "normalization_vectors.json");
 
   const { bytes: manifestBytes } = await readLocalOrRemote(
     versionDir,
@@ -198,7 +198,7 @@ vendors the model into src/@shared/classifier/.`);
 
   const { bytes: vectorsBytes } = await readLocalOrRemote(
     versionDir,
-    "normalization-vectors.json",
+    "normalization_vectors.json",
     version,
     vendoredVectors
   );
@@ -206,7 +206,7 @@ vendors the model into src/@shared/classifier/.`);
   mkdirSync(classifierDir, { recursive: true });
   writeFileSync(resolve(classifierDir, "manifest.json"), manifestBytes);
   writeFileSync(
-    resolve(classifierDir, "normalization-vectors.json"),
+    resolve(classifierDir, "normalization_vectors.json"),
     vectorsBytes
   );
 

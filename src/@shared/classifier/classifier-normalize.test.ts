@@ -1,4 +1,4 @@
-import vectors from "./normalization-vectors.json";
+import vectors from "./normalization_vectors.json";
 import {
   normalizeClassifierText,
   windowClassifierBytes,
