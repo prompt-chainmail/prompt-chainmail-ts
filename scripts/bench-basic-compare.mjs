@@ -93,6 +93,7 @@ function advancedForBench() {
     .forge(Rivets.delimiterConfusion())
     .forge(Rivets.instructionHijacking())
     .forge(Rivets.toolUseHijacking())
+    .forge(Rivets.sideChannel())
     .forge(Rivets.codeInjection())
     .forge(Rivets.sqlInjection())
     .forge(Rivets.templateInjection())

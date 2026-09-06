@@ -9,9 +9,10 @@ import { CLASSIFIER_LABELS } from "./classifier-labels";
 import { AttackType } from "../../rivets/instruction-hijacking/instruction-hijacking.types";
 import { RoleConfusionAttackType } from "../../rivets/role-confusion/role-confusion.types";
 import { ToolUseHijackingType } from "../../rivets/tool-use-hijacking/tool-use-hijacking.types";
+import { SideChannelAttackType } from "../../rivets/side-channel/side-channel.types";
 
 describe("CLASSIFIER_LABELS", () => {
-  it("orders instruction-hijacking labels before role-confusion labels before tool-use-hijacking", () => {
+  it("orders instruction-hijacking, role-confusion, tool-use-hijacking, then side-channel labels", () => {
     expect(CLASSIFIER_LABELS).toEqual([
       AttackType.INSTRUCTION_OVERRIDE,
       AttackType.INSTRUCTION_FORGETTING,
@@ -23,6 +24,8 @@ describe("CLASSIFIER_LABELS", () => {
       RoleConfusionAttackType.PERMISSION_ASSERTION,
       RoleConfusionAttackType.ROLE_INDICATOR,
       ToolUseHijackingType.TOOL_USE_HIJACKING,
+      SideChannelAttackType.COORDINATION,
+      SideChannelAttackType.STATE_WRITE,
     ]);
   });
 });
