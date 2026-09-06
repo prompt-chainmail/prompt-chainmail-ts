@@ -9,7 +9,7 @@ import { CLASSIFIER_MANIFEST } from "./classifier-manifest";
 import { normalizeClassifierText } from "./classifier-normalize";
 import type { OrtSessionLike, SessionFactory } from "./classifier.types";
 
-/** Fake dual-head session: `attack_probability [1,1]` + `subtype_probabilities [1,10]`. */
+/** Fake dual-head session: `attack_probability [1,1]` + `subtype_probabilities [1,N]`. */
 function makeFakeSessionFactory(
   runImpl: (callIndex: number) => { attack: number; subtypes: number[] }
 ): SessionFactory {

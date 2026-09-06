@@ -2,13 +2,11 @@ import { ChainmailRivet } from "../../index";
 
 /**
  * @description
- * - Blocks requests based on confidence thresholds.
- * - When only minThreshold is provided,
- *   blocks content with confidence below the threshold (low confidence = suspicious).
- * - When both thresholds are provided, blocks content within the range (confidence
- *   between min and max is considered risky).
- *
- * - Sets `context.blocked` = true when blocking conditions are met.
+ * Trust gate. This is the rivet that sets `context.blocked` from leftover
+ * confidence. Detectors only add flags and subtract trust; if this rivet is
+ * not forged, flags stay and `blocked` stays false.
+ * When only minThreshold is provided, blocks when confidence is strictly
+ * below the threshold. When both are provided, blocks inside the range.
  *
  * @param minThreshold Minimum confidence threshold (default: 0.5)
  * @param maxThreshold Optional maximum confidence threshold for range filtering

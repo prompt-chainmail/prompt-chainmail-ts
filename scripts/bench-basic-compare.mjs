@@ -93,13 +93,14 @@ function advancedForBench() {
     .forge(Rivets.delimiterConfusion())
     .forge(Rivets.instructionHijacking())
     .forge(Rivets.toolUseHijacking())
+    .forge(Rivets.sideChannel())
     .forge(Rivets.codeInjection())
     .forge(Rivets.sqlInjection())
     .forge(Rivets.templateInjection())
     .forge(Rivets.encodingDetection())
     .forge(Rivets.structureAnalysis())
     .forge(Rivets.confidenceFilter(0.6))
-    .forge(Rivets.rateLimit(10_000_000, 60_000));
+    .forge(Rivets.rateLimitFilter(10_000_000, 60_000));
 }
 
 function selectedChains() {

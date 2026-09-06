@@ -8,7 +8,7 @@ import {
   encodingDetection,
   confidenceFilter,
   structureAnalysis,
-  rateLimit,
+  rateLimitFilter,
 } from "./src";
 import { ChainmailContext } from "./src/types";
 import { ThreatLevel } from "./src/rivets/rivets.types";
@@ -439,7 +439,7 @@ export const conditionalChainmail = (config: {
   }
 
   if (config.enableLogging) {
-    chainmail.forge(Rivets.rateLimit(100, 60000));
+    chainmail.forge(Rivets.rateLimitFilter(100, 60000));
   }
 
   // Custom business logic
@@ -547,7 +547,7 @@ export const advancedCustomChainmail = () => {
     .forge(Rivets.encodingDetection())
     .forge(Rivets.structureAnalysis())
     .forge(personalInfoDetection())
-    .forge(Rivets.rateLimit(100, 60000));
+    .forge(Rivets.rateLimitFilter(100, 60000));
 };
 
 /**

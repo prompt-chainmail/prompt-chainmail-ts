@@ -28,7 +28,8 @@ function emptyResult(languageCode: string): SemanticDetectionResult {
 
 /**
  * Singleton-friendly wrapper around the classifier backend. Both
- * `instructionHijacking()`, `roleConfusion()`, and `toolUseHijacking()` share one instance so the
+ * `instructionHijacking()`, `roleConfusion()`, `toolUseHijacking()`, and
+ * `sideChannel()` share one instance so the
  * same sanitized text is classified once and filtered per attack family.
  */
 export class CombinedClassifier {
@@ -76,7 +77,9 @@ export class CombinedClassifier {
       options.confidenceThreshold === undefined ||
       confidence >= options.confidenceThreshold;
     const passesAttackGate =
-      passesAttackThreshold || family === "tool_use_hijacking";
+      passesAttackThreshold ||
+      family === "tool_use_hijacking" ||
+      family === "side_channel";
     const isAttack =
       passesAttackGate && attackTypes.length > 0 && passesConfidenceFloor;
     const riskScore = isAttack

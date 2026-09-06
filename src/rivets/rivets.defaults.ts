@@ -7,10 +7,11 @@ import { codeInjection } from "./code-injection/code-injection";
 import { delimiterConfusion } from "./delimiter-confusion/delimiter-confusion";
 import { instructionHijacking } from "./instruction-hijacking/instruction-hijacking";
 import { toolUseHijacking } from "./tool-use-hijacking/tool-use-hijacking";
+import { sideChannel } from "./side-channel/side-channel";
 import { templateInjection } from "./template-injection/template-injection";
 import { structureAnalysis } from "./structure-analysis/structure-analysis";
 import { confidenceFilter } from "./confidence-filter/confidence-filter";
-import { rateLimit } from "./rate-limit/rate-limit";
+import { rateLimitFilter } from "./rate-limit-filter/rate-limit-filter";
 import { logger } from "./logger/logger";
 import { untrustedWrapper } from "./untrusted-wrapper/untrusted-wrapper";
 import { httpFetch } from "./http-fetch/http-fetch";
@@ -29,10 +30,11 @@ export const Rivets = {
   delimiterConfusion,
   instructionHijacking,
   toolUseHijacking,
+  sideChannel,
   templateInjection,
   structureAnalysis,
   confidenceFilter,
-  rateLimit,
+  rateLimitFilter,
   logger,
   untrustedWrapper,
   httpFetch,

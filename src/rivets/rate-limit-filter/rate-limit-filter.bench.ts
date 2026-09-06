@@ -1,11 +1,13 @@
 import { describe } from "vitest";
 import { PromptChainmail } from "../../index";
 import { protectBench } from "../../@shared/benchmark.utils";
-import { rateLimit } from "./rate-limit";
+import { rateLimitFilter } from "./rate-limit-filter";
 
-describe("rateLimit()", () => {
+describe("rateLimitFilter()", () => {
   // High limit so the bench measures the check path, not blocking.
-  const chainmail = new PromptChainmail().forge(rateLimit(1_000_000, 60_000));
+  const chainmail = new PromptChainmail().forge(
+    rateLimitFilter(1_000_000, 60_000)
+  );
 
   protectBench("simple", chainmail, "test input");
   protectBench(
