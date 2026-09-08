@@ -110,18 +110,21 @@ describe("ClassifierBackend", () => {
 
   it("aggregates multiple windows by taking the maximum subtype probability per label", async () => {
     const label = CLASSIFIER_LABELS[2];
+    const threshold = CLASSIFIER_MANIFEST.thresholds[label];
+    const above = Math.min(1, threshold + 0.05);
+    const below = Math.max(0, threshold - 0.05);
     const longText = "benign filler text ".repeat(200);
     const factory = makeFakeSessionFactory((callIndex) => ({
       attack: 0.1,
       subtypes: CLASSIFIER_LABELS.map((l) =>
-        l === label ? (callIndex === 1 ? 0.95 : 0.02) : 0
+        l === label ? (callIndex === 1 ? above : below) : 0
       ),
     }));
     const backend = new ClassifierBackend({ sessionFactory: factory });
 
     const result = await backend.classify(longText);
 
-    expect(result.probabilities[label]).toBeCloseTo(0.95);
+    expect(result.probabilities[label]).toBeCloseTo(above);
     expect(
       result.matches.some((m) => m.label === label && m.window_index === 1)
     ).toBe(true);

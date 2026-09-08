@@ -3,19 +3,15 @@
   "attack_threshold": 0.95,
   "corpus_revision": "2026-09-06",
   "gate_failures": [
-    "macro_f1 0.7392 < 0.74",
-    "macro_recall 0.7622 < 0.9",
-    "benign_false_positive_rate 0.0147 > 0.01",
-    "ara recall 0.7755 < 0.8",
-    "deu recall 0.7797 < 0.8",
-    "ita recall 0.7059 < 0.8",
-    "jpn recall 0.6604 < 0.8",
-    "kor recall 0.7727 < 0.8",
-    "nld recall 0.7170 < 0.8",
+    "macro_recall 0.7673 < 0.9",
+    "benign_false_positive_rate 0.0126 > 0.01",
+    "deu recall 0.7119 < 0.8",
+    "jpn recall 0.7547 < 0.8",
+    "kor recall 0.7955 < 0.8",
     "por recall 0.7593 < 0.8",
     "rus recall 0.6721 < 0.8",
-    "spa recall 0.7115 < 0.8",
-    "zho recall 0.7170 < 0.8"
+    "spa recall 0.7308 < 0.8",
+    "zho recall 0.6981 < 0.8"
   ],
   "labels": [
     "instruction_override",
@@ -32,55 +28,55 @@
     "side_channel_state_write"
   ],
   "metrics": {
-    "attack_f1": 0.9263895843765649,
-    "attack_precision": 0.9924892703862661,
-    "attack_recall": 0.8685446009389671,
-    "benign_false_positive_rate": 0.014675052410901468,
-    "macro_f1": 0.7391868216816612,
-    "macro_recall": 0.7622286074300907,
+    "attack_f1": 0.945920303605313,
+    "attack_precision": 0.9940179461615155,
+    "attack_recall": 0.902262443438914,
+    "benign_false_positive_rate": 0.012578616352201259,
+    "macro_f1": 0.7628760078502287,
+    "macro_recall": 0.7673278834814953,
     "per_language": {
       "ara": {
-        "recall": 0.7755102040816326
+        "recall": 0.8115942028985508
       },
       "deu": {
-        "recall": 0.7796610169491526
+        "recall": 0.711864406779661
       },
       "eng": {
         "recall": 0.9401544401544402
       },
       "fra": {
-        "recall": 0.8478260869565217
+        "recall": 0.9130434782608695
       },
       "ita": {
-        "recall": 0.7058823529411765
+        "recall": 0.803921568627451
       },
       "jpn": {
-        "recall": 0.660377358490566
+        "recall": 0.7547169811320755
       },
       "kor": {
-        "recall": 0.7727272727272727
+        "recall": 0.7954545454545454
       },
       "nld": {
-        "recall": 0.7169811320754716
+        "recall": 0.8767123287671232
       },
       "por": {
         "recall": 0.7592592592592593
       },
       "ron": {
-        "recall": 0.8333333333333334
+        "recall": 0.875
       },
       "rus": {
         "recall": 0.6721311475409836
       },
       "spa": {
-        "recall": 0.7115384615384616
+        "recall": 0.7307692307692307
       },
       "zho": {
-        "recall": 0.7169811320754716
+        "recall": 0.6981132075471698
       }
     }
   },
-  "model_sha256": "e604cb2a460444fbd2d601177018d63dfb125579b90302c85ea4c4fd5632fd42",
+  "model_sha256": "28e1cea834cc58047b4f18ed62c8961451148bf5b5eb7bcaa842f61649f4e6ba",
   "model_size_bytes": 1341080,
   "normalization_version": "nfkc-whitespace-lower-v1",
   "quantization": {
@@ -90,18 +86,18 @@
   "release_quality": false,
   "schema_version": 1,
   "thresholds": {
-    "bypass_security": 0.14,
+    "bypass_security": 0.83,
     "information_extraction": 0.95,
-    "instruction_forgetting": 0.91,
-    "instruction_override": 0.95,
+    "instruction_forgetting": 0.95,
+    "instruction_override": 0.9,
     "mode_switching": 0.94,
-    "permission_assertion": 0.34,
-    "reset_system": 0.92,
-    "role_assumption": 0.94,
-    "role_indicator": 0.52,
-    "side_channel_coordination": 0.89,
-    "side_channel_state_write": 0.2,
-    "tool_use_hijacking": 0.06
+    "permission_assertion": 0.6,
+    "reset_system": 0.95,
+    "role_assumption": 0.95,
+    "role_indicator": 0.92,
+    "side_channel_coordination": 0.95,
+    "side_channel_state_write": 0.06,
+    "tool_use_hijacking": 0.16
   },
   "window_size_bytes": 1024,
   "window_stride_bytes": 768
