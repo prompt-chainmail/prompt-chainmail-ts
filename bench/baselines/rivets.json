@@ -505,10 +505,10 @@
       ]
     },
     {
-      "filepath": "src/rivets/rate-limit/rate-limit.bench.ts",
+      "filepath": "src/rivets/rate-limit-filter/rate-limit-filter.bench.ts",
       "groups": [
         {
-          "fullName": "src/rivets/rate-limit/rate-limit.bench.ts > rateLimit()",
+          "fullName": "src/rivets/rate-limit-filter/rate-limit-filter.bench.ts > rateLimitFilter()",
           "benchmarks": [
             {
               "name": "simple",
@@ -555,6 +555,62 @@
               "p999": 0.02081199999997807,
               "sampleCount": 236867,
               "median": 0.001692999999931999
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "filepath": "src/rivets/side-channel/side-channel.bench.ts",
+      "groups": [
+        {
+          "fullName": "src/rivets/side-channel/side-channel.bench.ts > sideChannel()",
+          "benchmarks": [
+            {
+              "name": "simple",
+              "rank": 1,
+              "rme": 0.2522867242518248,
+              "totalTime": 2000.087071999998,
+              "min": 0.1597910000000411,
+              "max": 0.7759169999999926,
+              "hz": 5382.265677681462,
+              "period": 0.18579536200650237,
+              "mean": 0.18579536200650237,
+              "variance": 0.0006156876243941024,
+              "sd": 0.024813053508065112,
+              "sem": 0.000239151547254094,
+              "df": 10764,
+              "critical": 1.96,
+              "moe": 0.00046873703261802427,
+              "p75": 0.1887499999999136,
+              "p99": 0.29920900000001893,
+              "p995": 0.3296250000000782,
+              "p999": 0.4178750000000946,
+              "sampleCount": 10765,
+              "median": 0.1783340000000635
+            },
+            {
+              "name": "signal",
+              "rank": 2,
+              "rme": 0.22560814053827288,
+              "totalTime": 2000.0231770000128,
+              "min": 0.2029579999998532,
+              "max": 0.5785420000001977,
+              "hz": 4268.9505292667645,
+              "period": 0.2342496107987834,
+              "mean": 0.2342496107987834,
+              "variance": 0.0006207422354722628,
+              "sd": 0.024914699184863998,
+              "sem": 0.0002696358118067737,
+              "df": 8537,
+              "critical": 1.96,
+              "moe": 0.0005284861911412765,
+              "p75": 0.23808299999973315,
+              "p99": 0.35199999999986176,
+              "p995": 0.3850410000000011,
+              "p999": 0.4371249999999236,
+              "sampleCount": 8538,
+              "median": 0.22620800000004238
             }
           ]
         }
@@ -1011,7 +1067,7 @@
   ],
   "meta": {
     "runner": "ubuntu-latest",
-    "generatedAt": "2026-08-08T07:26:42.150Z",
+    "generatedAt": "2026-09-08T16:00:05.228Z",
     "toleranceNote": "compare-benchmarks.mjs allows 25% hz regression"
   }
 }

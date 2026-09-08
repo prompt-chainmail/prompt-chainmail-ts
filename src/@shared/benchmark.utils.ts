@@ -9,7 +9,7 @@ export const BENCH_OPTS = {
 
 /** Longer budget for ONNX classifier rivets. */
 export const CLASSIFIER_BENCH_OPTS = {
-  warmupIterations: 5,
+  warmupIterations: 20,
   iterations: 20,
   time: 2_000,
 } as const;
