@@ -269,7 +269,7 @@ Detectors add flags and subtract leftover trust. They do not set `blocked`. `con
 
 #### Classifier-backed rivets
 
-`Rivets.roleConfusion()`, `Rivets.instructionHijacking()`, `Rivets.toolUseHijacking()`, and `Rivets.sideChannel()` run text through a shared, singleton ONNX classifier (`src/@shared/classifier`) instead of pattern matching or cloud embeddings:
+`Rivets.roleConfusion()`, `Rivets.instructionHijacking()`, and `Rivets.toolUseHijacking()` run text through a shared, singleton ONNX classifier (`src/@shared/classifier`) instead of pattern matching or cloud embeddings:
 
 - The model runs fully offline via `onnxruntime-web`, loaded from a base64-embedded copy of the ONNX weights (vendored into `src/@shared/classifier` via `npm run fetch:classifier` from a pinned `model_version` in [`prompt-chainmail-models`](https://github.com/prompt-chainmail/prompt-chainmail-models); only `dist` is packed into the npm tarball).
 - Long inputs are split into byte windows; per-label probabilities are aggregated across windows with max-pooling before being compared against the manifest's per-label thresholds.
