@@ -4,10 +4,10 @@ import { ChainmailContext } from "../../types";
 
 /**
  * @description
- * Implements rate limiting to prevent abuse by tracking request counts
- * per key within configurable time windows.
+ * Quota filter. Sets `context.blocked` when the request cap is hit, not from
+ * leftover trust. Detectors do not set `blocked`.
  */
-export function rateLimit(
+export function rateLimitFilter(
   maxRequests = 100,
   windowMs = 60000,
   keyFn: (context: ChainmailContext) => string = () => "global",

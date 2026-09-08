@@ -1,11 +1,11 @@
 import { describe, it, expect } from "vitest";
 import { PromptChainmail } from "../../index";
-import { rateLimit } from "./rate-limit";
+import { rateLimitFilter } from "./rate-limit-filter";
 import { SecurityFlags } from "../rivets.types";
 
-describe("rateLimit(...)", () => {
+describe("rateLimitFilter(...)", () => {
   it("should enforce rate limiting", async () => {
-    const chainmail = new PromptChainmail().forge(rateLimit(2, 60000));
+    const chainmail = new PromptChainmail().forge(rateLimitFilter(2, 60000));
 
     const result1 = await chainmail.protect("test 1");
     const result2 = await chainmail.protect("test 2");

@@ -29,13 +29,13 @@ Also available in Rust: [`prompt-chainmail-rs`](https://github.com/prompt-chainm
 ## Features
 
 - **Security** - Composable rivet system (dedicated security plugins) for enterprise-scale deployments
-- **Offline Classifier** - Portable ONNX classifier bundled in the package (no network calls, no API keys) backs `roleConfusion()`, `instructionHijacking()`, and `toolUseHijacking()`
+- **Offline Classifier** - Portable ONNX classifier bundled in the package (no network calls, no API keys) backs `roleConfusion()`, `instructionHijacking()`, `toolUseHijacking()`, and `sideChannel()`
 - **Minimal Dependencies** - `franc` for language detection and `onnxruntime-web` for local model inference; no cloud embedding APIs
 - **TypeScript** - Full type safety, IntelliSense support, and strict mode compliance
 - **Compliance Ready** - Built-in audit logging and security event tracking for SOC2/ISO27001
 - **Monitoring Integration** - Native support for Datadog, New Relic, Sentry, and custom telemetry
 
-> **⚠️ Development-quality classifier artifact.** The ONNX classifier embedded in this package (base64 in the published `dist` bundle; `"release_quality": false` in the repo manifest, pin `2026.08.09`) clears the production **macro_f1 ≥ 0.74** gate (measured **≈ 0.753**) and reaches **attack recall ≈ 0.92** / attack F1 **≈ 0.96** / **macro_recall ≈ 0.72**, with benign false-positive rate ≈ **1.0%** (measured **1.02%**, just over the ≤ 1% release gate). It still fails other release gates (notably macro_recall ≥ 0.90 and per-language recall for several langs). It is included so the classifier-backed rivets are functional end-to-end, but must **not** be treated as fully production-ready until a release-quality artifact (`release_quality: true`) is published.
+> The bundled ONNX classifier (pin `2026.09.08`, `release_quality: false`; base64-embedded in the published `dist` bundle) is a 12-head development artifact: macro_f1 ≈ 0.763, macro_recall ≈ 0.767, attack F1 ≈ 0.946, benign false-positive rate ≈ 1.3%. A few release gates are still open (macro_recall is under 0.90; benign FPR is just over 1%; some language-recall gates). It is included so the classifier-backed rivets, including `sideChannel()`, work end-to-end. Treat scores as directional until a `release_quality: true` artifact is published.
 
 ## Quick Start
 
@@ -76,13 +76,14 @@ new PromptChainmail()
   .forge(Rivets.delimiterConfusion())
   .forge(Rivets.instructionHijacking())
   .forge(Rivets.toolUseHijacking())
+  .forge(Rivets.sideChannel())
   .forge(Rivets.codeInjection())
   .forge(Rivets.sqlInjection())
   .forge(Rivets.templateInjection())
   .forge(Rivets.encodingDetection())
   .forge(Rivets.structureAnalysis())
   .forge(Rivets.confidenceFilter(0.3))
-  .forge(Rivets.rateLimit());
+  .forge(Rivets.rateLimitFilter());
 ```
 
 #### Development security preset
@@ -105,13 +106,14 @@ new PromptChainmail()
   .forge(Rivets.delimiterConfusion())
   .forge(Rivets.instructionHijacking())
   .forge(Rivets.toolUseHijacking())
+  .forge(Rivets.sideChannel())
   .forge(Rivets.codeInjection())
   .forge(Rivets.sqlInjection())
   .forge(Rivets.templateInjection())
   .forge(Rivets.encodingDetection())
   .forge(Rivets.structureAnalysis())
   .forge(Rivets.confidenceFilter(confidenceFilter))
-  .forge(Rivets.rateLimit(50, 60000));
+  .forge(Rivets.rateLimitFilter(50, 60000));
 ```
 
 ```typescript
@@ -240,25 +242,30 @@ const chainmail = new PromptChainmail()
 
 ### Built-in security rivets
 
-- `Rivets.sanitize()` - HTML removal, whitespace normalization
-- `Rivets.patternDetection()` - Common injection patterns
-- `Rivets.roleConfusion()` - Role manipulation detection (classifier-backed, see below)
-- `Rivets.encodingDetection()` - Base64/hex/binary/octal/ROT13/URL encoding detection
-- `Rivets.structureAnalysis()` - Input structure anomaly detection
-- `Rivets.codeInjection()` - Code execution attempts
-- `Rivets.sqlInjection()` - SQL injection patterns
-- `Rivets.delimiterConfusion()` - Context-breaking attempts
-- `Rivets.instructionHijacking()` - Instruction override detection (classifier-backed, see below)
-- `Rivets.toolUseHijacking()` - Indirect tool-use / agent-tool abuse detection (classifier-backed, see below)
-- `Rivets.languageDetection()` - Languages detection
-- `Rivets.templateInjection()` - Template syntax injection detection
-- `Rivets.confidenceFilter()` - Block low-confidence input
-- `Rivets.rateLimit()` - Request rate limiting
-- `Rivets.untrustedWrapper()` - Wrap content in security boundary tags
-- `Rivets.httpFetch()` - External HTTP API calls with automatic (configurable) signal abort
-- `Rivets.condition()` - Custom logic with predicates
-- `Rivets.logger()` - Request logging and debugging
-- `Rivets.telemetry()` - Monitoring integration
+Detectors add flags and subtract leftover trust. They do not set `blocked`. `context.blocked` is set only by a forged filter: `confidenceFilter` (trust gate) or `rateLimitFilter` (quota).
+
+| Rivet                           | Role                                                                          | Blocks |
+| ------------------------------- | ----------------------------------------------------------------------------- | ------ |
+| `Rivets.sanitize()`             | HTML removal, whitespace normalization                                        | no     |
+| `Rivets.patternDetection()`     | Common injection patterns                                                     | no     |
+| `Rivets.roleConfusion()`        | Role manipulation detection (classifier-backed, see below)                    | no     |
+| `Rivets.encodingDetection()`    | Base64/hex/binary/octal/ROT13/URL encoding detection                          | no     |
+| `Rivets.structureAnalysis()`    | Input structure anomaly detection                                             | no     |
+| `Rivets.codeInjection()`        | Code execution attempts                                                       | no     |
+| `Rivets.sqlInjection()`         | SQL injection patterns                                                        | no     |
+| `Rivets.delimiterConfusion()`   | Context-breaking attempts                                                     | no     |
+| `Rivets.instructionHijacking()` | Instruction override detection (classifier-backed, see below)                 | no     |
+| `Rivets.toolUseHijacking()`     | Indirect tool-use / agent-tool abuse detection (classifier-backed, see below) | no     |
+| `Rivets.sideChannel()`          | Unofficial side-channel use (classifier-backed, see below)                    | no     |
+| `Rivets.languageDetection()`    | Languages detection                                                           | no     |
+| `Rivets.templateInjection()`    | Template syntax injection detection                                           | no     |
+| `Rivets.confidenceFilter()`     | Trust gate on leftover confidence (`<` min)                                   | yes    |
+| `Rivets.rateLimitFilter()`      | Quota filter                                                                  | yes    |
+| `Rivets.untrustedWrapper()`     | Wrap content in security boundary tags                                        | no     |
+| `Rivets.httpFetch()`            | External HTTP API calls with automatic (configurable) signal abort            | no     |
+| `Rivets.condition()`            | Custom logic with predicates                                                  | no     |
+| `Rivets.logger()`               | Request logging and debugging                                                 | no     |
+| `Rivets.telemetry()`            | Monitoring integration                                                        | no     |
 
 #### Classifier-backed rivets
 
@@ -268,7 +275,8 @@ const chainmail = new PromptChainmail()
 - Long inputs are split into byte windows; per-label probabilities are aggregated across windows with max-pooling before being compared against the manifest's per-label thresholds.
 - All three rivets only accept classifier-relevant options (e.g. confidence threshold, language allow-list). The legacy `embeddingFunction`/`similarityThreshold` options from prior vector-search-based versions have been **removed**; this is a breaking change.
 - `Rivets.toolUseHijacking()` targets indirect tool abuse (exfiltration via agent tools, covert email/integration actions) rather than classic instruction-override phrasing.
-- See the warning above: the bundled artifact is `release_quality: false` (macro_f1 ≈ 0.75 vs the ≥ 0.74 production gate; attack F1 ≈ 0.96 / attack recall ≈ 0.92; benign FPR ≈ 1.0%; macro_recall / some per-language recalls still fail release). Treat its output as directional, not authoritative, until a release-quality artifact ships.
+- `Rivets.sideChannel()` targets unofficial out-of-band paths (wiki/paste/signal pages used as a peer board or durable memory) rather than in-band tool hijacking.
+- The bundled artifact is `release_quality: false` (see the note above). Treat scores as directional until a release-quality pin ships.
 
 ## Security Flags
 
@@ -300,7 +308,7 @@ Prompt Chainmail uses standardized security flags to categorize detected threats
 | `ROT13_ENCODING`                            | General Encoding Detection             | ROT13 encoded suspicious content                   | `encodingDetection()`    | Medium       |
 | `MIXED_CASE_OBFUSCATION`                    | General Encoding Detection             | Mixed case obfuscation patterns                    | `encodingDetection()`    | Medium       |
 | **General Rate Control**                    |
-| `RATE_LIMITED`                              | General Rate Control                   | Request rate limit exceeded                        | `rateLimit()`            | Medium       |
+| `RATE_LIMITED`                              | General Rate Control                   | Request rate limit exceeded                        | `rateLimitFilter()`      | Medium       |
 | **General HTTP Operations**                 |
 | `HTTP_VALIDATION_FAILED`                    | General HTTP Operations                | External validation failed                         | `httpFetch()`            | High         |
 | `HTTP_SUCCESS`                              | General HTTP Operations                | External request succeeded                         | `httpFetch()`            | Info         |
@@ -312,6 +320,9 @@ Prompt Chainmail uses standardized security flags to categorize detected threats
 | `TEMPLATE_INJECTION`                        | Specific Injection Attacks             | Template injection patterns detected               | `templateInjection()`    | High         |
 | `DELIMITER_CONFUSION`                       | Specific Injection Attacks             | Context-breaking delimiter attempts                | `delimiterConfusion()`   | High         |
 | `TOOL_USE_HIJACKING`                        | Specific Injection Attacks             | Indirect tool-use / agent-tool abuse detected      | `toolUseHijacking()`     | High         |
+| `SIDE_CHANNEL`                              | Specific Injection Attacks             | Unofficial side-channel use detected               | `sideChannel()`          | High         |
+| `SIDE_CHANNEL_COORDINATION`                 | Specific Injection Attacks             | Peer coordination over a side channel              | `sideChannel()`          | High         |
+| `SIDE_CHANNEL_STATE_WRITE`                  | Specific Injection Attacks             | Durable shared-state write over a side channel     | `sideChannel()`          | High         |
 | **Specific Role Confusion Attacks**         |
 | `ROLE_CONFUSION`                            | Specific Role Confusion Attacks        | Role manipulation or confusion attempts            | `roleConfusion()`        | Medium/High  |
 | `ROLE_CONFUSION_ROLE_ASSUMPTION`            | Specific Role Confusion Attacks        | Direct role assumption patterns                    | `roleConfusion()`        | High         |
@@ -348,7 +359,7 @@ if (result.context.flags.has(SecurityFlags.SQL_INJECTION)) {
 
 ## Confidence Scoring
 
-Prompt Chainmail uses a confidence scoring system (0.0 to 1.0) to assess input safety. Lower scores indicate higher security risks.
+Prompt Chainmail uses leftover trust (0.0 to 1.0) to assess input safety. Lower scores mean higher risk. These bands describe that score. They are not `context.blocked`. Only a forged `confidenceFilter` or `rateLimitFilter` sets `blocked`.
 
 | Confidence Range | Risk Level        | Description                                     | Action                   |
 | ---------------- | ----------------- | ----------------------------------------------- | ------------------------ |
@@ -499,13 +510,14 @@ const advancedChain = new PromptChainmail()
   .forge(Rivets.roleConfusion())
   .forge(Rivets.instructionHijacking())
   .forge(Rivets.toolUseHijacking())
+  .forge(Rivets.sideChannel())
   .forge(Rivets.sqlInjection())
   .forge(Rivets.codeInjection())
   .forge(Rivets.confidenceFilter(0.8));
 
 // Custom protection for enterprise setup with monitoring:
 const enterpriseChain = Chainmails.strict()
-  .forge(Rivets.rateLimit({ maxRequests: 100, windowMs: 60000 }))
+  .forge(Rivets.rateLimitFilter({ maxRequests: 100, windowMs: 60000 }))
   .forge(Rivets.telemetry({ provider: sentryProvider }))
   .forge(Rivets.logger({ level: "info" }));
 ```

@@ -4,9 +4,9 @@
  *
  * @public
  * @example Processing Context
+ * @example Custom gate rivet (not a detector)
  * ```typescript
  * const rivet: ChainmailRivet = async (context, next) => {
- *   // Check confidence level
  *   if (context.confidence < 0.5) {
  *     context.blocked = true;
  *     context.metadata.reason = 'Confidence below threshold';
@@ -34,7 +34,10 @@ export interface ChainmailContext {
   confidence: number;
   /** Additional data from rivets (patterns matched, decoded content, etc.) */
   metadata: Record<string, unknown>;
-  /** True if input should be rejected based on security analysis */
+  /**
+   * True only if a forged rivet set it (`confidenceFilter` or
+   * `rateLimitFilter`). Detectors never set this.
+   */
   blocked: boolean;
   /** Timestamp when processing started (milliseconds since epoch) */
   readonly start_time: number;

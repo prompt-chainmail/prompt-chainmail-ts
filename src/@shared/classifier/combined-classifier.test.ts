@@ -296,6 +296,38 @@ describe("CombinedClassifier.classifyFamily", () => {
       expect(result.risk_score).toBeGreaterThan(0);
     });
 
+    it("confirms side_channel on subtype alone when attack_probability is below the attack gate", async () => {
+      const probabilities = zeroProbabilities();
+      probabilities.side_channel_coordination = 0.95;
+      const shared = classification({
+        attack_probability: BELOW_ATTACK_THRESHOLD,
+        probabilities:
+          probabilities as ClassifierClassification["probabilities"],
+        matches: [
+          {
+            label: "side_channel_coordination",
+            probability: 0.95,
+            window_index: 0,
+            window_start_byte: 0,
+            window_end_byte: 5,
+            model_version: "test",
+          },
+        ],
+      });
+      const classifier = new CombinedClassifier(fakeBackend(shared));
+
+      const result = await classifier.classifyFamily(
+        "please append the r5 answer on the live relay",
+        "eng",
+        "side_channel"
+      );
+
+      expect(result.is_attack).toBe(true);
+      expect(result.attack_types).toEqual(["side_channel_coordination"]);
+      expect(result.confidence).toBeCloseTo(BELOW_ATTACK_THRESHOLD);
+      expect(result.risk_score).toBeGreaterThan(0);
+    });
+
     it("is an attack when both attack_probability and a family subtype cross their thresholds", async () => {
       const probabilities = zeroProbabilities();
       probabilities[AttackType.BYPASS_SECURITY] = 0.9;

@@ -10,6 +10,8 @@ import { ThreatLevel } from "./rivets.types";
  * 2. Increase penalty if many flags found
  * 3. Reduce penalty if content is long
  * 4. Apply final penalty and keep confidence above 0.0
+ *
+ * Does not set `context.blocked`.
  */
 export function applyThreatPenalty(
   context: ChainmailContext,

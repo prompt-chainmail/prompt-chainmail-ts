@@ -61,6 +61,11 @@ export enum SecurityFlags {
   DELIMITER_CONFUSION = "delimiter_confusion",
   TOOL_USE_HIJACKING = "tool_use_hijacking",
 
+  // Unofficial side-channel use (peer coordination / durable shared state)
+  SIDE_CHANNEL = "side_channel",
+  SIDE_CHANNEL_COORDINATION = "side_channel_coordination",
+  SIDE_CHANNEL_STATE_WRITE = "side_channel_state_write",
+
   // Specific role confusion attacks
   ROLE_CONFUSION = "role_confusion",
   ROLE_CONFUSION_ROLE_ASSUMPTION = "role_confusion_role_assumption",

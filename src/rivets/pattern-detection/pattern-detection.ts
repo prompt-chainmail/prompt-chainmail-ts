@@ -7,6 +7,7 @@ import { createPatternDetectionPatterns } from "./pattern-detection.utils";
  * @description
  * Detects malicious patterns using regex matching for injection attempts,
  * suspicious keywords, and attack signatures with custom pattern support.
+ * Adds flags and a ThreatLevel penalty. Does not set `blocked`.
  */
 export function patternDetection(customPatterns?: RegExp[]): ChainmailRivet {
   const patterns = [

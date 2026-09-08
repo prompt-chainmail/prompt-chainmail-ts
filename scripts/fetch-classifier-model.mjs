@@ -216,7 +216,7 @@ vendors the model into src/@shared/classifier/.`);
  * Source: prompt-chainmail-models models/${version}/${modelFilename}
  * model_version: ${version}
  * quantization.format: ${quantizationFormat}
- * Two-output contract: attack_probability [B,1] + subtype_probabilities [B,10].
+ * Two-output contract: attack_probability [B,1] + subtype_probabilities [B,12].
  * Do not hand-edit.
  */
 

@@ -28,13 +28,14 @@ export const Chainmails: ChainmailPresets = {
       .forge(Rivets.delimiterConfusion())
       .forge(Rivets.instructionHijacking())
       .forge(Rivets.toolUseHijacking())
+      .forge(Rivets.sideChannel())
       .forge(Rivets.codeInjection())
       .forge(Rivets.sqlInjection())
       .forge(Rivets.templateInjection())
       .forge(Rivets.encodingDetection())
       .forge(Rivets.structureAnalysis())
       .forge(Rivets.confidenceFilter(confidenceFilter))
-      .forge(Rivets.rateLimit());
+      .forge(Rivets.rateLimitFilter());
   },
 
   /**
@@ -55,12 +56,13 @@ export const Chainmails: ChainmailPresets = {
       .forge(Rivets.delimiterConfusion())
       .forge(Rivets.instructionHijacking())
       .forge(Rivets.toolUseHijacking())
+      .forge(Rivets.sideChannel())
       .forge(Rivets.codeInjection())
       .forge(Rivets.sqlInjection())
       .forge(Rivets.templateInjection())
       .forge(Rivets.encodingDetection())
       .forge(Rivets.structureAnalysis())
       .forge(Rivets.confidenceFilter(confidenceFilter))
-      .forge(Rivets.rateLimit(50, 60000));
+      .forge(Rivets.rateLimitFilter(50, 60000));
   },
 };
