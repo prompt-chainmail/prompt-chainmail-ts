@@ -76,10 +76,12 @@ export class CombinedClassifier {
     const passesConfidenceFloor =
       options.confidenceThreshold === undefined ||
       confidence >= options.confidenceThreshold;
+    // Side channel may flag below the 0.95 attack threshold, but not when
+    // the attack head is certain the text is benign (probability 0).
     const passesAttackGate =
       passesAttackThreshold ||
       family === "tool_use_hijacking" ||
-      family === "side_channel";
+      (family === "side_channel" && confidence > 0);
     const isAttack =
       passesAttackGate && attackTypes.length > 0 && passesConfidenceFloor;
     const riskScore = isAttack
