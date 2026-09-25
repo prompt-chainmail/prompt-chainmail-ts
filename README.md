@@ -35,7 +35,7 @@ Also available in Rust: [`prompt-chainmail-rs`](https://github.com/prompt-chainm
 - **Compliance Ready** - Built-in audit logging and security event tracking for SOC2/ISO27001
 - **Monitoring Integration** - Native support for Datadog, New Relic, Sentry, and custom telemetry
 
-> The bundled ONNX classifier (pin `2026.09.23`, `release_quality: false`; base64-embedded in the published `dist` bundle) is a 12-head model: macro_f1 ≈ 0.879, macro_recall ≈ 0.908, attack F1 ≈ 0.977, benign false-positive rate ≈ 1.4%. Language recall is at or above 0.80. The benign false-positive gate is still open.
+> The bundled ONNX classifier (pin `2026.09.25`, `release_quality: false`; base64-embedded in the published `dist` bundle) is a 12-head model: macro_f1 ≈ 0.853, macro_recall ≈ 0.909, attack F1 ≈ 0.979, benign false-positive rate ≈ 1.25%. Language recall is at or above 0.80. The benign false-positive gate is still open.
 
 ## Quick Start
 

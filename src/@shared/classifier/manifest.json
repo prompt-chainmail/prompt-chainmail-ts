@@ -2,7 +2,7 @@
   "artifact_version": "classifier-v1-2026-09-06-seed20260805",
   "attack_threshold": 0.95,
   "corpus_revision": "2026-09-06",
-  "gate_failures": ["benign_false_positive_rate 0.0140 > 0.01"],
+  "gate_failures": ["benign_false_positive_rate 0.0125 > 0.01"],
   "labels": [
     "instruction_override",
     "instruction_forgetting",
@@ -18,55 +18,55 @@
     "side_channel_state_write"
   ],
   "metrics": {
-    "attack_f1": 0.9770431588613407,
-    "attack_precision": 0.9916123019571296,
-    "attack_recall": 0.96289592760181,
-    "benign_false_positive_rate": 0.014040561622464899,
-    "macro_f1": 0.8790252989044265,
-    "macro_recall": 0.9081728611904282,
+    "attack_f1": 0.9788990825688073,
+    "attack_precision": 0.9925581395348837,
+    "attack_recall": 0.9656108597285068,
+    "benign_false_positive_rate": 0.0124804992199688,
+    "macro_f1": 0.8532178559127455,
+    "macro_recall": 0.9089032132495042,
     "per_language": {
       "ara": {
         "recall": 0.855072463768116
       },
       "deu": {
-        "recall": 0.9322033898305084
+        "recall": 0.9491525423728814
       },
       "eng": {
-        "recall": 0.9420849420849421
+        "recall": 0.9227799227799228
       },
       "fra": {
-        "recall": 0.9565217391304348
+        "recall": 0.9347826086956522
       },
       "ita": {
         "recall": 0.9411764705882353
       },
       "jpn": {
-        "recall": 0.9056603773584906
+        "recall": 0.8867924528301887
       },
       "kor": {
-        "recall": 0.9090909090909091
+        "recall": 0.8863636363636364
       },
       "nld": {
-        "recall": 0.8904109589041096
+        "recall": 0.9315068493150684
       },
       "por": {
-        "recall": 0.8333333333333334
+        "recall": 0.9074074074074074
       },
       "ron": {
-        "recall": 0.8958333333333334
+        "recall": 0.9166666666666666
       },
       "rus": {
-        "recall": 0.9180327868852459
+        "recall": 0.9016393442622951
       },
       "spa": {
-        "recall": 0.8461538461538461
+        "recall": 0.8269230769230769
       },
       "zho": {
-        "recall": 0.8679245283018868
+        "recall": 0.9056603773584906
       }
     }
   },
-  "model_sha256": "49ef8c455bd18832699ee73de8a571fad45edce7824643d25319b1ebaf976913",
+  "model_sha256": "153de2306934012a46c1329522a2b81c67cf9d51bf55374bbb11d201088268f9",
   "model_size_bytes": 1341080,
   "normalization_version": "nfkc-whitespace-lower-v1",
   "quantization": {
@@ -76,18 +76,18 @@
   "release_quality": false,
   "schema_version": 1,
   "thresholds": {
-    "bypass_security": 0.75,
-    "information_extraction": 0.55,
-    "instruction_forgetting": 0.51,
-    "instruction_override": 0.4,
-    "mode_switching": 0.95,
-    "permission_assertion": 0.94,
-    "reset_system": 0.88,
-    "role_assumption": 0.92,
-    "role_indicator": 0.55,
-    "side_channel_coordination": 0.93,
-    "side_channel_state_write": 0.12,
-    "tool_use_hijacking": 0.95
+    "bypass_security": 0.9,
+    "information_extraction": 0.94,
+    "instruction_forgetting": 0.82,
+    "instruction_override": 0.69,
+    "mode_switching": 0.59,
+    "permission_assertion": 0.95,
+    "reset_system": 0.65,
+    "role_assumption": 0.95,
+    "role_indicator": 0.21,
+    "side_channel_coordination": 0.41,
+    "side_channel_state_write": 0.17,
+    "tool_use_hijacking": 0.84
   },
   "window_size_bytes": 1024,
   "window_stride_bytes": 768
