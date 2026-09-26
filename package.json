@@ -86,6 +86,7 @@
     "node": ">=16.0.0"
   },
   "dependencies": {
+    "@prompt-chainmail/prompt-chainmail": "npm:@jsr/prompt-chainmail__prompt-chainmail@^0.8.1",
     "franc": "^6.2.0",
     "onnxruntime-web": "^1.27.0"
   },
